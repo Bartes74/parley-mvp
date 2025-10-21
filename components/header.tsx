@@ -27,7 +27,8 @@ export function Header() {
     const supabase = createClient();
 
     // Get initial user
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(({ data: { user }, error: authError }) => {
+      console.log("[Header] Auth user:", user, "Error:", authError);
       setUser(user);
       if (user) {
         // Fetch profile
@@ -36,8 +37,14 @@ export function Header() {
           .select("email, role")
           .eq("id", user.id)
           .single()
-          .then(({ data }) => {
-            setProfile(data);
+          .then(({ data, error }) => {
+            console.log("[Header] Profile data:", data, "Error:", error);
+            if (data) {
+              setProfile(data);
+            } else if (user.email) {
+              // Fallback: use email from auth user
+              setProfile({ email: user.email, role: "user" });
+            }
             setIsLoading(false);
           });
       } else {
@@ -49,6 +56,7 @@ export function Header() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log("[Header] Auth state changed:", _event, "User:", session?.user);
       setUser(session?.user ?? null);
       if (session?.user) {
         supabase
@@ -56,8 +64,14 @@ export function Header() {
           .select("email, role")
           .eq("id", session.user.id)
           .single()
-          .then(({ data }) => {
-            setProfile(data);
+          .then(({ data, error }) => {
+            console.log("[Header] Profile on auth change:", data, "Error:", error);
+            if (data) {
+              setProfile(data);
+            } else if (session.user.email) {
+              // Fallback
+              setProfile({ email: session.user.email, role: "user" });
+            }
           });
       } else {
         setProfile(null);
