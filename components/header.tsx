@@ -131,11 +131,6 @@ export function Header() {
                     <span className="text-sm text-muted-foreground">
                       {profile.email}
                     </span>
-                    {profile.role === "admin" && (
-                      <Badge variant="secondary" className="text-xs">
-                        ADMIN
-                      </Badge>
-                    )}
                   </div>
                   <Button variant="outline" size="sm" onClick={handleSignOut}>
                     {t("auth.signOut")}
