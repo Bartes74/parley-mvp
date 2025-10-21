@@ -1,11 +1,11 @@
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 
 export default async function Home() {
-  const t = useTranslations("landing")
+  const t = await getTranslations("landing")
   const supabase = await createClient()
 
   const {

@@ -67,10 +67,7 @@ function clearCodeVerifierBackup() {
 
 export default function UpdatePasswordPage() {
   const router = useRouter()
-  const supabase = useMemo(
-    () => createClient({ auth: { detectSessionInUrl: false } }),
-    []
-  )
+  const supabase = createClient()
 
   const [isExchanging, setIsExchanging] = useState(true)
   const [exchangeError, setExchangeError] = useState<string | null>(null)

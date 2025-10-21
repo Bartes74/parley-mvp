@@ -3,10 +3,10 @@ import { createClient } from "@/lib/supabase/server"
 import { ConversationWidget } from "@/components/conversation-widget"
 
 interface ConversationPageProps {
-  params: {
+  params: Promise<{
     id: string
     locale: string
-  }
+  }>
 }
 
 export default async function ConversationPage({ params }: ConversationPageProps) {

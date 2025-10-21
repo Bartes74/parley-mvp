@@ -96,6 +96,15 @@
     "cancel": "Anuluj",
     "delete": "Usuń",
     "edit": "Edytuj",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "auth": {
+      "signIn": "Zaloguj się",
+      "signOut": "Wyloguj się"
+    },
+    "nav": {
+      "agents": "Agenci",
+      "mySessions": "Moje rozmowy",
+      "admin": "Admin"
+    }
   }
 }

@@ -1,11 +1,10 @@
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { AgentCard } from "@/components/agent-card"
-import { Badge } from "@/components/ui/badge"
 
 export default async function AgentsPage() {
-  const t = useTranslations("agents")
-  const tAgent = useTranslations("agent")
+  const t = await getTranslations("agents")
+  const tAgent = await getTranslations("agent")
   const supabase = await createClient()
 
   // Fetch active agents, ordered by display_order
@@ -69,9 +68,9 @@ export default async function AgentsPage() {
                 thumbnailPath: agent.thumbnail_path,
               }}
               difficultyLabel={
-                tAgent(`difficulty.${agent.difficulty}` as any)
+                tAgent(`difficulty.${agent.difficulty}`)
               }
-              languageLabel={tAgent(`language.${agent.language}` as any)}
+              languageLabel={tAgent(`language.${agent.language}`)}
             />
           ))}
         </div>

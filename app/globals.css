@@ -165,21 +165,11 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-inter;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-manrope font-semibold;
-  }
-}
-
-@layer utilities {
-  .font-manrope {
-    font-family: var(--font-manrope), sans-serif;
-  }
-  .font-inter {
+    @apply bg-background text-foreground;
     font-family: var(--font-inter), sans-serif;
   }
-  .font-mono {
-    font-family: var(--font-jetbrains-mono), monospace;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-manrope), sans-serif;
+    @apply font-semibold;
   }
 }

@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation"
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,10 +10,10 @@ import { ArrowLeft } from "lucide-react"
 import { StartSessionButton } from "@/components/start-session-button"
 
 interface AgentPageProps {
-  params: {
+  params: Promise<{
     id: string
     locale: string
-  }
+  }>
 }
 
 const difficultyColors = {
@@ -24,8 +24,7 @@ const difficultyColors = {
 
 export default async function AgentPage({ params }: AgentPageProps) {
   const { id } = await params
-  const t = useTranslations("agent")
-  const tAgent = useTranslations("agent")
+  const t = await getTranslations("agent")
   const supabase = await createClient()
 
   // Check if user is authenticated
@@ -105,7 +104,7 @@ export default async function AgentPage({ params }: AgentPageProps) {
           {/* Badges */}
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="secondary" className={difficultyColors[agent.difficulty as keyof typeof difficultyColors]}>
-              {tAgent(`difficulty.${agent.difficulty}` as any)}
+              {t(`difficulty.${agent.difficulty}`)}
             </Badge>
             <Badge variant="outline" className="gap-1">
               <svg
@@ -122,7 +121,7 @@ export default async function AgentPage({ params }: AgentPageProps) {
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 6v6l4 2" />
               </svg>
-              {tAgent(`language.${agent.language}` as any)}
+              {t(`language.${agent.language}`)}
             </Badge>
           </div>
 

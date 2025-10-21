@@ -12,40 +12,6 @@ const PKCE_BACKUP_KEY = "parley.supabase.pkce"
 
 type CodeVerifierCookie = { name: string; value: string }
 
-function findCodeVerifierCookies(): CodeVerifierCookie[] {
-  if (typeof document === "undefined") return []
-
-  return document.cookie
-    .split("; ")
-    .filter(Boolean)
-    .map((entry) => {
-      const [name, ...rest] = entry.split("=")
-      const value = rest.join("=")
-      return { name, value }
-    })
-    .filter(
-      (cookie): cookie is CodeVerifierCookie =>
-        Boolean(cookie.name) &&
-        Boolean(cookie.value) &&
-        cookie.name.includes("-code-verifier"),
-    )
-}
-
-function backupCodeVerifierCookies() {
-  if (typeof window === "undefined") return
-
-  const cookies = findCodeVerifierCookies()
-  if (!cookies.length) return
-
-  try {
-    window.localStorage.setItem(PKCE_BACKUP_KEY, JSON.stringify(cookies))
-  } catch {
-    // ignore storage errors
-  }
-}
-
-type CodeVerifierCookie = { name: string; value: string }
-
 function findCodeVerifierCookie(): CodeVerifierCookie | null {
   if (typeof document === "undefined") return null
 
@@ -121,7 +87,7 @@ export default function ResetPasswordPage() {
     )
 
     await new Promise((resolve) => setTimeout(resolve, 100))
-    backupCodeVerifierCookies()
+    backupCodeVerifierCookie()
   }
 
   return (
