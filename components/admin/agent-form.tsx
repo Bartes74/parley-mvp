@@ -46,13 +46,39 @@ export function AgentForm({ agent }: AgentFormProps) {
     elevenAgentId: agent?.eleven_agent_id || "",
     isActive: agent?.is_active ?? true,
     displayOrder: agent?.display_order || 0,
+    thumbnailPath: agent?.thumbnail_path || "",
   });
+
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      let thumbnailPath = formData.thumbnailPath;
+
+      // Upload thumbnail if new file selected
+      if (thumbnailFile) {
+        setIsUploadingImage(true);
+        const uploadFormData = new FormData();
+        uploadFormData.append("file", thumbnailFile);
+
+        const uploadResponse = await fetch("/api/upload/agent-thumbnail", {
+          method: "POST",
+          body: uploadFormData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error("Failed to upload thumbnail");
+        }
+
+        const uploadData = await uploadResponse.json();
+        thumbnailPath = uploadData.path;
+        setIsUploadingImage(false);
+      }
+
       const url = agent
         ? `/api/admin/agents/${agent.id}`
         : "/api/admin/agents";
@@ -70,6 +96,7 @@ export function AgentForm({ agent }: AgentFormProps) {
           elevenAgentId: formData.elevenAgentId,
           isActive: formData.isActive,
           displayOrder: formData.displayOrder,
+          thumbnailPath,
         }),
       });
 
@@ -82,6 +109,7 @@ export function AgentForm({ agent }: AgentFormProps) {
       toast.error("Nie udało się zapisać agenta");
     } finally {
       setIsSubmitting(false);
+      setIsUploadingImage(false);
     }
   };
 
@@ -188,11 +216,24 @@ export function AgentForm({ agent }: AgentFormProps) {
               id="thumbnail"
               type="file"
               accept="image/jpeg,image/png,image/webp"
-              disabled
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setThumbnailFile(file);
+                }
+              }}
+              disabled={isSubmitting || isUploadingImage}
             />
-            <p className="text-xs text-muted-foreground">
-              Funkcja uploadu będzie dodana w następnej iteracji.
-            </p>
+            {isUploadingImage && (
+              <p className="text-xs text-muted-foreground">
+                Przesyłanie i przetwarzanie obrazu...
+              </p>
+            )}
+            {thumbnailFile && (
+              <p className="text-xs text-emerald-600">
+                Wybrany plik: {thumbnailFile.name}
+              </p>
+            )}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">

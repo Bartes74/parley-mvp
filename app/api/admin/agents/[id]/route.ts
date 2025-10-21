@@ -51,7 +51,7 @@ export async function PATCH(
       difficulty,
       language,
       tags,
-      thumbnail_path: thumbnailPath,
+      thumbnail_path: thumbnailPath || null,
       eleven_agent_id: elevenAgentId,
       is_active: isActive,
       display_order: displayOrder,

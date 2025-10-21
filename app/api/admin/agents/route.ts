@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       difficulty,
       language,
       tags: tags || [],
-      thumbnail_path: thumbnailPath,
+      thumbnail_path: thumbnailPath || null,
       eleven_agent_id: elevenAgentId,
       is_active: isActive ?? true,
       display_order: displayOrder ?? 0,
