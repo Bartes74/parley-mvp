@@ -80,6 +80,25 @@
       "en": "Angielski"
     }
   },
+  "sessions": {
+    "title": "Moje rozmowy",
+    "subtitle": "Przeglądaj historię swoich rozmów i feedback",
+    "noSessions": "Brak rozmów",
+    "noSessionsDescription": "Rozpocznij swoją pierwszą rozmowę z agentem AI",
+    "browseAgents": "Przeglądaj agentów",
+    "statusCompleted": "Ukończona",
+    "statusPending": "Oczekuje",
+    "statusError": "Błąd",
+    "agent": "Agent",
+    "viewDetails": "Zobacz szczegóły",
+    "viewStatus": "Zobacz status",
+    "untitled": "Bez tytułu",
+    "deleteConfirmTitle": "Czy na pewno chcesz usunąć tę rozmowę?",
+    "deleteConfirmDescription": "Ta akcja jest nieodwracalna. Wszystkie dane, feedback i transkrypcja zostaną usunięte.",
+    "deleteConfirm": "Usuń rozmowę",
+    "deleteSuccess": "Rozmowa została usunięta",
+    "deleteError": "Nie udało się usunąć rozmowy"
+  },
   "session": {
     "pending": "Przetwarzanie… Feedback pojawi się wkrótce.",
     "feedback": "Feedback",

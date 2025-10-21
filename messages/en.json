@@ -80,6 +80,25 @@
       "en": "English"
     }
   },
+  "sessions": {
+    "title": "My Conversations",
+    "subtitle": "Browse your conversation history and feedback",
+    "noSessions": "No conversations",
+    "noSessionsDescription": "Start your first conversation with an AI agent",
+    "browseAgents": "Browse agents",
+    "statusCompleted": "Completed",
+    "statusPending": "Pending",
+    "statusError": "Error",
+    "agent": "Agent",
+    "viewDetails": "View details",
+    "viewStatus": "View status",
+    "untitled": "Untitled",
+    "deleteConfirmTitle": "Are you sure you want to delete this conversation?",
+    "deleteConfirmDescription": "This action cannot be undone. All data, feedback and transcript will be deleted.",
+    "deleteConfirm": "Delete conversation",
+    "deleteSuccess": "Conversation deleted",
+    "deleteError": "Failed to delete conversation"
+  },
   "session": {
     "pending": "Processing… Feedback will appear soon.",
     "feedback": "Feedback",
