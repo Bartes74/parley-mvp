@@ -123,6 +123,107 @@
     "user": "You",
     "agent": "Agent"
   },
+  "admin": {
+    "title": "Admin Panel",
+    "dashboard": {
+      "title": "Dashboard",
+      "totalUsers": "Users",
+      "totalAgents": "Agents",
+      "totalSessions": "Sessions",
+      "activeSessions": "Active"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "agents": "Agents",
+      "users": "Users",
+      "sessions": "Sessions",
+      "settings": "Settings",
+      "webhooks": "Webhooks"
+    },
+    "agents": {
+      "title": "Manage Agents",
+      "add": "Add agent",
+      "edit": "Edit agent",
+      "delete": "Delete agent",
+      "noAgents": "No agents",
+      "form": {
+        "title": "Title",
+        "shortDescription": "Short description",
+        "difficulty": "Difficulty level",
+        "language": "Language",
+        "tags": "Tags (comma separated)",
+        "elevenAgentId": "ElevenLabs Agent ID",
+        "thumbnail": "Thumbnail",
+        "isActive": "Active",
+        "displayOrder": "Display order"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      }
+    },
+    "users": {
+      "title": "Manage Users",
+      "email": "Email",
+      "role": "Role",
+      "created": "Created",
+      "sessions": "Sessions",
+      "changeRole": "Change role",
+      "roleChanged": "Role changed successfully",
+      "roles": {
+        "user": "User",
+        "admin": "Administrator"
+      }
+    },
+    "sessions": {
+      "title": "All Sessions",
+      "filterByUser": "Filter by user",
+      "filterByAgent": "Filter by agent",
+      "filterByStatus": "Filter by status",
+      "allUsers": "All users",
+      "allAgents": "All agents",
+      "allStatuses": "All statuses"
+    },
+    "settings": {
+      "title": "Settings",
+      "retention": {
+        "title": "Data Retention",
+        "description": "Set how long to keep data (0 = indefinitely)",
+        "transcripts": "Transcripts (days)",
+        "feedback": "Feedback (days)",
+        "saved": "Retention settings saved"
+      },
+      "branding": {
+        "title": "Branding",
+        "description": "Customize platform appearance",
+        "logo": "Logo",
+        "uploadLogo": "Upload logo"
+      },
+      "landing": {
+        "title": "Landing Page",
+        "description": "Edit landing page content",
+        "headline": "Headline",
+        "lead": "Lead text",
+        "ctaLogin": "Login button text",
+        "ctaRegister": "Register button text"
+      },
+      "email": {
+        "title": "Email Notifications",
+        "description": "Configure email notifications",
+        "enabled": "Enabled",
+        "senderName": "Sender name",
+        "testEmail": "Send test email"
+      }
+    },
+    "webhooks": {
+      "title": "Webhook Monitor",
+      "provider": "Provider",
+      "status": "Status",
+      "created": "Created",
+      "payload": "Payload",
+      "lastEvents": "Recent events"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",

@@ -123,6 +123,107 @@
     "user": "Ty",
     "agent": "Agent"
   },
+  "admin": {
+    "title": "Panel Administracyjny",
+    "dashboard": {
+      "title": "Dashboard",
+      "totalUsers": "Użytkownicy",
+      "totalAgents": "Agenci",
+      "totalSessions": "Rozmowy",
+      "activeSessions": "Aktywne"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "agents": "Agenci",
+      "users": "Użytkownicy",
+      "sessions": "Rozmowy",
+      "settings": "Ustawienia",
+      "webhooks": "Webhooks"
+    },
+    "agents": {
+      "title": "Zarządzanie Agentami",
+      "add": "Dodaj agenta",
+      "edit": "Edytuj agenta",
+      "delete": "Usuń agenta",
+      "noAgents": "Brak agentów",
+      "form": {
+        "title": "Tytuł",
+        "shortDescription": "Krótki opis",
+        "difficulty": "Poziom trudności",
+        "language": "Język",
+        "tags": "Tagi (rozdziel przecinkami)",
+        "elevenAgentId": "ElevenLabs Agent ID",
+        "thumbnail": "Miniatura",
+        "isActive": "Aktywny",
+        "displayOrder": "Kolejność wyświetlania"
+      },
+      "status": {
+        "active": "Aktywny",
+        "inactive": "Nieaktywny"
+      }
+    },
+    "users": {
+      "title": "Zarządzanie Użytkownikami",
+      "email": "Email",
+      "role": "Rola",
+      "created": "Utworzony",
+      "sessions": "Rozmowy",
+      "changeRole": "Zmień rolę",
+      "roleChanged": "Rola została zmieniona",
+      "roles": {
+        "user": "Użytkownik",
+        "admin": "Administrator"
+      }
+    },
+    "sessions": {
+      "title": "Wszystkie Rozmowy",
+      "filterByUser": "Filtruj po użytkowniku",
+      "filterByAgent": "Filtruj po agencie",
+      "filterByStatus": "Filtruj po statusie",
+      "allUsers": "Wszyscy użytkownicy",
+      "allAgents": "Wszyscy agenci",
+      "allStatuses": "Wszystkie statusy"
+    },
+    "settings": {
+      "title": "Ustawienia",
+      "retention": {
+        "title": "Retencja Danych",
+        "description": "Określ jak długo przechowywać dane (0 = bezterminowo)",
+        "transcripts": "Transkrypcje (dni)",
+        "feedback": "Feedback (dni)",
+        "saved": "Ustawienia retencji zapisane"
+      },
+      "branding": {
+        "title": "Branding",
+        "description": "Dostosuj wygląd platformy",
+        "logo": "Logo",
+        "uploadLogo": "Wgraj logo"
+      },
+      "landing": {
+        "title": "Landing Page",
+        "description": "Edytuj treść strony głównej",
+        "headline": "Nagłówek",
+        "lead": "Tekst główny",
+        "ctaLogin": "Tekst przycisku logowania",
+        "ctaRegister": "Tekst przycisku rejestracji"
+      },
+      "email": {
+        "title": "Powiadomienia E-mail",
+        "description": "Konfiguruj powiadomienia e-mail",
+        "enabled": "Włączone",
+        "senderName": "Nazwa nadawcy",
+        "testEmail": "Wyślij testowy e-mail"
+      }
+    },
+    "webhooks": {
+      "title": "Monitor Webhooków",
+      "provider": "Provider",
+      "status": "Status",
+      "created": "Data",
+      "payload": "Payload",
+      "lastEvents": "Ostatnie zdarzenia"
+    }
+  },
   "common": {
     "loading": "Ładowanie...",
     "error": "Wystąpił błąd",
