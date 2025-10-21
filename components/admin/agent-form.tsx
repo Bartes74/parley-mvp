@@ -52,6 +52,15 @@ export function AgentForm({ agent }: AgentFormProps) {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
+  // Set custom validation messages in Polish
+  const handleInvalid = (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.setCustomValidity("Proszę wypełnić to pole.");
+  };
+
+  const handleInput = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.setCustomValidity("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -128,6 +137,8 @@ export function AgentForm({ agent }: AgentFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
+              onInvalid={handleInvalid}
+              onInput={handleInput}
               required
             />
           </div>
@@ -140,6 +151,8 @@ export function AgentForm({ agent }: AgentFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, shortDescription: e.target.value })
               }
+              onInvalid={handleInvalid}
+              onInput={handleInput}
               required
               rows={3}
             />
@@ -192,6 +205,8 @@ export function AgentForm({ agent }: AgentFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, elevenAgentId: e.target.value })
               }
+              onInvalid={handleInvalid}
+              onInput={handleInput}
               required
             />
           </div>
@@ -212,26 +227,33 @@ export function AgentForm({ agent }: AgentFormProps) {
             <Label htmlFor="thumbnail">
               Miniatura (zalecany rozmiar: 800x450px, proporcje 16:9)
             </Label>
-            <Input
-              id="thumbnail"
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  setThumbnailFile(file);
-                }
-              }}
-              disabled={isSubmitting || isUploadingImage}
-            />
+            <div className="flex items-center gap-4">
+              <label
+                htmlFor="thumbnail"
+                className="inline-flex cursor-pointer items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
+              >
+                {t("chooseFile")}
+              </label>
+              <input
+                id="thumbnail"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setThumbnailFile(file);
+                  }
+                }}
+                disabled={isSubmitting || isUploadingImage}
+                className="hidden"
+              />
+              <span className="text-sm text-muted-foreground">
+                {thumbnailFile ? thumbnailFile.name : t("noFileChosen")}
+              </span>
+            </div>
             {isUploadingImage && (
               <p className="text-xs text-muted-foreground">
                 Przesyłanie i przetwarzanie obrazu...
-              </p>
-            )}
-            {thumbnailFile && (
-              <p className="text-xs text-emerald-600">
-                Wybrany plik: {thumbnailFile.name}
               </p>
             )}
           </div>

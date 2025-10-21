@@ -155,7 +155,9 @@
         "elevenAgentId": "ElevenLabs Agent ID",
         "thumbnail": "Thumbnail",
         "isActive": "Active",
-        "displayOrder": "Display order"
+        "displayOrder": "Display order",
+        "chooseFile": "Choose file",
+        "noFileChosen": "No file chosen"
       },
       "status": {
         "active": "Active",
