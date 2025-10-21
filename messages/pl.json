@@ -106,7 +106,22 @@
     "notes": "Notatki",
     "downloadPdf": "Pobierz PDF",
     "delete": "Usuń rozmowę",
-    "rename": "Zmień tytuł"
+    "rename": "Zmień tytuł",
+    "untitled": "Bez tytułu",
+    "backToList": "Powrót do listy",
+    "titleUpdated": "Tytuł został zaktualizowany",
+    "titleUpdateError": "Nie udało się zaktualizować tytułu",
+    "notesSaved": "Notatki zapisane",
+    "notesSaveError": "Nie udało się zapisać notatek",
+    "overallScore": "Ocena ogólna",
+    "criteria": "Kryteria oceny",
+    "summary": "Podsumowanie",
+    "tips": "Wskazówki",
+    "transcriptTitle": "Transkrypcja rozmowy",
+    "notesTitle": "Twoje notatki",
+    "notesPlaceholder": "Dodaj swoje notatki do tej rozmowy...",
+    "user": "Ty",
+    "agent": "Agent"
   },
   "common": {
     "loading": "Ładowanie...",

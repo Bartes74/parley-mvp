@@ -106,7 +106,22 @@
     "notes": "Notes",
     "downloadPdf": "Download PDF",
     "delete": "Delete Conversation",
-    "rename": "Rename"
+    "rename": "Rename",
+    "untitled": "Untitled",
+    "backToList": "Back to list",
+    "titleUpdated": "Title updated",
+    "titleUpdateError": "Failed to update title",
+    "notesSaved": "Notes saved",
+    "notesSaveError": "Failed to save notes",
+    "overallScore": "Overall Score",
+    "criteria": "Evaluation Criteria",
+    "summary": "Summary",
+    "tips": "Tips",
+    "transcriptTitle": "Conversation Transcript",
+    "notesTitle": "Your Notes",
+    "notesPlaceholder": "Add your notes about this conversation...",
+    "user": "You",
+    "agent": "Agent"
   },
   "common": {
     "loading": "Loading...",
