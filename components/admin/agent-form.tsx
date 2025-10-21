@@ -82,10 +82,13 @@ export function AgentForm({ agent }: AgentFormProps) {
         });
 
         if (!uploadResponse.ok) {
-          throw new Error("Failed to upload thumbnail");
+          const errorData = await uploadResponse.json().catch(() => ({}));
+          console.error("Upload Error:", uploadResponse.status, errorData);
+          throw new Error(`Failed to upload thumbnail: ${uploadResponse.status}`);
         }
 
         const uploadData = await uploadResponse.json();
+        console.log("Upload successful:", uploadData);
         thumbnailPath = uploadData.path;
         setIsUploadingImage(false);
       }
@@ -111,13 +114,18 @@ export function AgentForm({ agent }: AgentFormProps) {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to save agent");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("API Error:", response.status, errorData);
+        throw new Error(`Failed to save agent: ${response.status}`);
+      }
 
       toast.success(agent ? "Agent zaktualizowany" : "Agent dodany");
       router.push("/admin/agents");
       router.refresh();
-    } catch {
-      toast.error("Nie udało się zapisać agenta");
+    } catch (error) {
+      console.error("Save agent error:", error);
+      toast.error(`Nie udało się zapisać agenta: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSubmitting(false);
       setIsUploadingImage(false);
