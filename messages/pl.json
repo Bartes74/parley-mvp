@@ -1,0 +1,101 @@
+{
+  "nav": {
+    "agents": "Agenci",
+    "mySessions": "Moje rozmowy",
+    "admin": "Admin"
+  },
+  "landing": {
+    "title": "Trenuj rozmowy, które liczą się naprawdę",
+    "lead": "Ćwicz z agentami AI i otrzymuj szczegółowy feedback.",
+    "cta": "Zaloguj się",
+    "ctaRegister": "Załóż konto"
+  },
+  "auth": {
+    "login": {
+      "title": "Panel logowania",
+      "subtitle": "Zaloguj się, aby zarządzać treningami rozmów i agentami.",
+      "email": "E-mail",
+      "password": "Hasło",
+      "forgotPassword": "Zapomniałeś hasła?",
+      "submit": "Zaloguj się",
+      "submitting": "Logowanie...",
+      "noAccount": "Nie masz konta?",
+      "createAccount": "Utwórz konto",
+      "registrationSuccess": "Konto zostało utworzone. Możesz się zalogować.",
+      "passwordResetSuccess": "Hasło zostało zaktualizowane. Zaloguj się ponownie.",
+      "errorRequired": "Podaj adres e-mail i hasło."
+    },
+    "register": {
+      "title": "Załóż konto",
+      "subtitle": "Rejestracja daje natychmiastowy dostęp do katalogu agentów.",
+      "email": "E-mail",
+      "password": "Hasło",
+      "confirmPassword": "Powtórz hasło",
+      "submit": "Załóż konto",
+      "submitting": "Tworzenie konta...",
+      "haveAccount": "Masz już konto?",
+      "login": "Zaloguj się",
+      "errorRequired": "Podaj adres e-mail i hasło.",
+      "errorMismatch": "Hasła muszą być takie same."
+    },
+    "resetPassword": {
+      "title": "Reset hasła",
+      "subtitle": "Wyślij link odzyskiwania hasła na swój adres e-mail.",
+      "email": "E-mail",
+      "submit": "Wyślij link resetujący",
+      "submitting": "Wysyłanie...",
+      "backToLogin": "Wróć do logowania",
+      "errorRequired": "Podaj adres e-mail.",
+      "successMessage": "Sprawdź skrzynkę e-mail. Wysłaliśmy instrukcję resetu hasła."
+    },
+    "updatePassword": {
+      "title": "Ustaw nowe hasło",
+      "subtitle": "Wprowadź nowe hasło, aby zakończyć reset.",
+      "password": "Nowe hasło",
+      "confirmPassword": "Powtórz hasło",
+      "submit": "Zapisz nowe hasło",
+      "submitting": "Zapisywanie...",
+      "errorTooShort": "Hasło powinno mieć co najmniej 8 znaków.",
+      "errorMismatch": "Hasła muszą być takie same.",
+      "preparing": "Trwa przygotowywanie resetu hasła…",
+      "requestNew": "Poproś o nowy link resetujący"
+    }
+  },
+  "agents": {
+    "title": "Katalog agentów",
+    "subtitle": "Wybierz scenariusz rozmowy i rozpocznij trening",
+    "noAgents": "Brak dostępnych agentów",
+    "noAgentsDescription": "Skontaktuj się z administratorem w celu dodania agentów."
+  },
+  "agent": {
+    "start": "START",
+    "instructions": "Przeczytaj krótką instrukcję i rozpocznij trening.",
+    "difficulty": {
+      "beginner": "Początkujący",
+      "intermediate": "Średnio zaawansowany",
+      "advanced": "Zaawansowany"
+    },
+    "language": {
+      "pl": "Polski",
+      "en": "Angielski"
+    }
+  },
+  "session": {
+    "pending": "Przetwarzanie… Feedback pojawi się wkrótce.",
+    "feedback": "Feedback",
+    "transcript": "Transkrypcja",
+    "notes": "Notatki",
+    "downloadPdf": "Pobierz PDF",
+    "delete": "Usuń rozmowę",
+    "rename": "Zmień tytuł"
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Wystąpił błąd",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "close": "Zamknij"
+  }
+}
