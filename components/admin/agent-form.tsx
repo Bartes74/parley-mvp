@@ -28,6 +28,7 @@ interface AgentFormProps {
     eleven_agent_id: string;
     is_active: boolean;
     display_order: number;
+    thumbnail_path: string | null;
   };
 }
 
@@ -53,8 +54,9 @@ export function AgentForm({ agent }: AgentFormProps) {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Set custom validation messages in Polish
-  const handleInvalid = (e: React.InvalidEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    e.target.setCustomValidity("Proszę wypełnić to pole.");
+  const handleInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+    target.setCustomValidity("Proszę wypełnić to pole.");
   };
 
   const handleInput = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
