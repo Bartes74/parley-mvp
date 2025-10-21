@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
  * Returns list of user's sessions with agent details
  * Ordered by created_at DESC (newest first)
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   const supabase = await createClient();
 
   // Check authentication
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // Fetch user's sessions with agent information
-    const { data: sessions, error } = await supabase
+    const { data: rawSessions, error } = await supabase
       .from("sessions")
       .select(
         `
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
         ended_at,
         title_override,
         created_at,
-        agents (
+        agents!inner (
           id,
           title,
           difficulty,
@@ -51,18 +51,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Transform data for frontend
-    const transformedSessions = sessions.map((session) => ({
-      id: session.id,
-      title: session.title_override || session.agents?.title || "Untitled",
-      agentTitle: session.agents?.title || "Unknown Agent",
-      agentDifficulty: session.agents?.difficulty,
-      agentLanguage: session.agents?.language,
-      status: session.status,
-      startedAt: session.started_at,
-      endedAt: session.ended_at,
-      createdAt: session.created_at,
-    }));
+    // Transform data for frontend (agents is array from join, take first)
+    const transformedSessions = rawSessions?.map((session) => {
+      const agent = Array.isArray(session.agents) ? session.agents[0] : session.agents;
+      return {
+        id: session.id,
+        title: session.title_override || agent?.title || "Untitled",
+        agentTitle: agent?.title || "Unknown Agent",
+        agentDifficulty: agent?.difficulty,
+        agentLanguage: agent?.language,
+        status: session.status,
+        startedAt: session.started_at,
+        endedAt: session.ended_at,
+        createdAt: session.created_at,
+      };
+    }) || [];
 
     return NextResponse.json({
       sessions: transformedSessions,

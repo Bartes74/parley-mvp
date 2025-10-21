@@ -39,7 +39,7 @@ export default async function SessionsPage() {
     .order("created_at", { ascending: false });
 
   // Transform to match component interface (agents is array from join, take first)
-  const sessions = rawSessions?.map((session: any) => ({
+  const sessions = rawSessions?.map((session) => ({
     ...session,
     agents: Array.isArray(session.agents) ? session.agents[0] : session.agents,
   })) || [];
