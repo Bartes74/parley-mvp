@@ -92,3 +92,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// Force Node.js runtime for Sharp compatibility
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
