@@ -1,22 +1,29 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleToggle } from "./locale-toggle";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { User } from "@supabase/supabase-js";
+import type { BrandingSettings } from "@/lib/settings";
 
 interface UserProfile {
   email: string;
   role: string;
 }
 
-export function Header() {
+interface HeaderProps {
+  branding: BrandingSettings;
+  serviceName: string;
+  primaryColor: string;
+}
+
+export function Header({ branding, serviceName, primaryColor }: HeaderProps) {
   const t = useTranslations("common");
   const router = useRouter();
   const pathname = usePathname();
@@ -26,6 +33,13 @@ export function Header() {
 
   // Check if we're on landing page (root path)
   const isLandingPage = pathname === "/" || pathname === "/pl" || pathname === "/en";
+  const logoUrl = useMemo(() => {
+    if (!branding.logo_path) return null;
+
+    return branding.logo_path.startsWith("http")
+      ? branding.logo_path
+      : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${branding.logo_path}`;
+  }, [branding.logo_path]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -98,8 +112,26 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-7xl mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-primary">Parley</span>
+          <Link href="/" className="flex items-center gap-3">
+            {logoUrl ? (
+              <span className="relative h-10 w-auto">
+                <Image
+                  src={logoUrl}
+                  alt={serviceName}
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto object-contain"
+                  priority
+                />
+              </span>
+            ) : (
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-soft text-lg font-semibold text-primary-foreground">
+                {serviceName.charAt(0).toUpperCase()}
+              </span>
+            )}
+            <span className="text-lg font-semibold" style={{ color: primaryColor }}>
+              {serviceName}
+            </span>
           </Link>
           {user && !isLoading && (
             <nav className="flex items-center gap-4">
