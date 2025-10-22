@@ -37,13 +37,21 @@ interface Session {
   profiles: {
     id: string;
     email: string;
-  };
+  } | {
+    id: string;
+    email: string;
+  }[];
   agents: {
     id: string;
     title: string;
     difficulty: string;
     language: string;
-  };
+  } | {
+    id: string;
+    title: string;
+    difficulty: string;
+    language: string;
+  }[];
 }
 
 interface Agent {
