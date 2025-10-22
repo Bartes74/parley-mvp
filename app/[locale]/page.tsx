@@ -16,16 +16,23 @@ export default async function Home() {
     redirect("/agents")
   }
 
-  // Fetch landing page settings
-  const { data: settings } = await supabase
+  // Fetch all settings (same approach as admin settings page)
+  const { data: allSettings } = await supabase
     .from("settings")
-    .select("key, value")
-    .eq("key", "landing")
-    .single();
+    .select("key, value");
 
-  console.log("[Landing] Settings from DB:", settings);
+  console.log("[Landing] All settings from DB:", allSettings);
 
-  const landing = settings?.value as {
+  // Transform array to object
+  const settingsObject = allSettings?.reduce((acc, item) => {
+    acc[item.key] = item.value;
+    return acc;
+  }, {} as Record<string, unknown>) || {};
+
+  console.log("[Landing] Settings object:", settingsObject);
+
+  // Extract landing settings
+  const landing = settingsObject.landing as {
     headline?: string;
     lead?: string;
     cta_login?: string;
@@ -36,11 +43,11 @@ export default async function Home() {
   const lead = landing?.lead || "Platforma do treningu rozmów z AI";
   const ctaRegister = landing?.cta_register || "Utwórz konto";
 
-  console.log("[Landing] Parsed values:", { headline, lead, ctaRegister });
+  console.log("[Landing] Final values:", { headline, lead, ctaRegister });
 
   return (
     <div className="container mx-auto px-4 py-12 lg:py-24">
-      <div className="grid gap-8 lg:grid-cols-[2fr,1fr] lg:gap-16 items-start">
+      <div className="grid gap-8 lg:grid-cols-[2fr,1fr] lg:gap-16 items-start max-w-7xl mx-auto">
         {/* Left side - Hero content (70%) */}
         <div className="flex flex-col justify-start space-y-8 lg:py-12">
           <div className="space-y-4">
@@ -60,7 +67,7 @@ export default async function Home() {
         </div>
 
         {/* Right side - Login form (30%) */}
-        <div className="lg:py-12">
+        <div className="flex items-start lg:py-12">
           <LandingLoginForm />
         </div>
       </div>
