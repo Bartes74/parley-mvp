@@ -11,20 +11,7 @@
     "ctaRegister": "Create Account"
   },
   "auth": {
-    "login": {
-      "title": "Login Panel",
-      "subtitle": "Sign in to manage conversation training and agents.",
-      "email": "Email",
-      "password": "Password",
-      "forgotPassword": "Forgot password?",
-      "submit": "Sign In",
-      "submitting": "Signing in...",
-      "noAccount": "Don't have an account?",
-      "createAccount": "Create account",
-      "registrationSuccess": "Account created. You can now sign in.",
-      "passwordResetSuccess": "Password updated. Please sign in again.",
-      "errorRequired": "Please provide email and password."
-    },
+    "login": "Sign In",
     "register": {
       "title": "Create Account",
       "subtitle": "Registration gives you immediate access to the agent catalog.",
@@ -59,7 +46,14 @@
       "errorMismatch": "Passwords must match.",
       "preparing": "Preparing password reset…",
       "requestNew": "Request a new reset link"
-    }
+    },
+    "loginTitle": "Sign In",
+    "loginDescription": "Already have an account? Enter your credentials",
+    "email": "Email",
+    "password": "Password",
+    "enterCredentials": "Please enter email and password",
+    "loggingIn": "Signing in...",
+    "forgotPassword": "Forgot password?"
   },
   "agents": {
     "title": "Agent Catalog",

@@ -1,11 +1,11 @@
-import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { PublicHeader } from "@/components/public-header"
+import { LandingLoginForm } from "@/components/landing-login-form"
 
 export default async function Home() {
-  const t = await getTranslations("landing")
   const supabase = await createClient()
 
   const {
@@ -17,107 +17,56 @@ export default async function Home() {
     redirect("/agents")
   }
 
+  // Fetch landing page settings
+  const { data: settings } = await supabase
+    .from("settings")
+    .select("key, value")
+    .eq("key", "landing")
+    .single();
+
+  const landing = settings?.value as {
+    headline?: string;
+    lead?: string;
+    cta_login?: string;
+    cta_register?: string;
+  } | undefined;
+
+  const headline = landing?.headline || "Parley";
+  const lead = landing?.lead || "Platforma do treningu rozmów z AI";
+  const ctaRegister = landing?.cta_register || "Utwórz konto";
+
   return (
-    <div className="container mx-auto flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-4 py-16">
-      <div className="mx-auto max-w-3xl text-center">
-        {/* Logo */}
-        <div className="mb-8 flex justify-center">
-          <span className="inline-flex size-20 items-center justify-center rounded-full bg-primary text-3xl font-semibold text-primary-foreground">
-            P
-          </span>
-        </div>
+    <div className="flex min-h-screen flex-col">
+      <PublicHeader />
 
-        {/* Title */}
-        <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          {t("title")}
-        </h1>
+      <main className="flex-1">
+        <div className="container mx-auto px-4 py-12 lg:py-24">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
+            {/* Left side - Hero content */}
+            <div className="flex flex-col justify-start space-y-8 lg:py-12">
+              <div className="space-y-4">
+                <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+                  {headline}
+                </h1>
+                <p className="text-xl text-muted-foreground sm:text-2xl lg:text-3xl max-w-2xl">
+                  {lead}
+                </p>
+              </div>
 
-        {/* Lead */}
-        <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
-          {t("lead")}
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button asChild size="lg" className="min-w-[200px]">
-            <Link href="/login">{t("cta")}</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="min-w-[200px]">
-            <Link href="/register">{t("ctaRegister")}</Link>
-          </Button>
-        </div>
-
-        {/* Features */}
-        <div className="mt-16 grid gap-8 sm:grid-cols-3">
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2v20M2 12h20" />
-              </svg>
+              <div>
+                <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
+                  <Link href="/register">{ctaRegister}</Link>
+                </Button>
+              </div>
             </div>
-            <h3 className="font-semibold">Agenci AI</h3>
-            <p className="text-sm text-muted-foreground">
-              Trenuj z różnymi scenariuszami rozmów
-            </p>
-          </div>
 
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
+            {/* Right side - Login form */}
+            <div className="lg:py-12">
+              <LandingLoginForm />
             </div>
-            <h3 className="font-semibold">Szczegółowy feedback</h3>
-            <p className="text-sm text-muted-foreground">
-              Otrzymuj analizę po każdej rozmowie
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-                <path d="M12 12v9" />
-                <path d="m16 16-4-4-4 4" />
-              </svg>
-            </div>
-            <h3 className="font-semibold">Historia i postępy</h3>
-            <p className="text-sm text-muted-foreground">
-              Śledź swoje treningi i notatki
-            </p>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

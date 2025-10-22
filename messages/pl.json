@@ -11,20 +11,7 @@
     "ctaRegister": "Załóż konto"
   },
   "auth": {
-    "login": {
-      "title": "Panel logowania",
-      "subtitle": "Zaloguj się, aby zarządzać treningami rozmów i agentami.",
-      "email": "E-mail",
-      "password": "Hasło",
-      "forgotPassword": "Zapomniałeś hasła?",
-      "submit": "Zaloguj się",
-      "submitting": "Logowanie...",
-      "noAccount": "Nie masz konta?",
-      "createAccount": "Utwórz konto",
-      "registrationSuccess": "Konto zostało utworzone. Możesz się zalogować.",
-      "passwordResetSuccess": "Hasło zostało zaktualizowane. Zaloguj się ponownie.",
-      "errorRequired": "Podaj adres e-mail i hasło."
-    },
+    "login": "Zaloguj się",
     "register": {
       "title": "Załóż konto",
       "subtitle": "Rejestracja daje natychmiastowy dostęp do katalogu agentów.",
@@ -59,7 +46,14 @@
       "errorMismatch": "Hasła muszą być takie same.",
       "preparing": "Trwa przygotowywanie resetu hasła…",
       "requestNew": "Poproś o nowy link resetujący"
-    }
+    },
+    "loginTitle": "Zaloguj się",
+    "loginDescription": "Masz już konto? Wpisz swoje dane",
+    "email": "E-mail",
+    "password": "Hasło",
+    "enterCredentials": "Podaj adres e-mail i hasło",
+    "loggingIn": "Logowanie...",
+    "forgotPassword": "Zapomniałeś hasła?"
   },
   "agents": {
     "title": "Katalog agentów",
