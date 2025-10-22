@@ -51,9 +51,9 @@ export default async function Home() {
 
   return (
     <div className="container mx-auto px-4 py-12 lg:py-24 max-w-7xl">
-      <div className="grid gap-8 lg:grid-cols-[2fr,1fr] lg:gap-12">
+      <div className="grid gap-10 lg:grid-cols-3 lg:items-start">
         {/* Left side - Hero content (66%) */}
-        <div className="flex flex-col justify-start space-y-6">
+        <div className="flex flex-col justify-start space-y-6 lg:col-span-2">
           <div className="space-y-4">
             {/* Headline - duża czcionka */}
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
@@ -77,7 +77,7 @@ export default async function Home() {
         </div>
 
         {/* Right side - Login form (33%) - na wysokości nagłówka */}
-        <div>
+        <div className="w-full lg:col-span-1 lg:self-start">
           <LandingLoginForm />
         </div>
       </div>

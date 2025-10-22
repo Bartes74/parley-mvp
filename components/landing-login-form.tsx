@@ -51,7 +51,7 @@ export function LandingLoginForm() {
   }
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>{t("loginTitle")}</CardTitle>
         <CardDescription>{t("loginDescription")}</CardDescription>
