@@ -7,7 +7,7 @@ import { LocaleToggle } from "./locale-toggle";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 
@@ -19,9 +19,13 @@ interface UserProfile {
 export function Header() {
   const t = useTranslations("common");
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Check if we're on landing page (root path)
+  const isLandingPage = pathname === "/" || pathname === "/pl" || pathname === "/en";
 
   useEffect(() => {
     const supabase = createClient();
@@ -137,11 +141,14 @@ export function Header() {
                   </Button>
                 </div>
               ) : (
-                <Link href="/login">
-                  <Button variant="default" size="sm">
-                    {t("auth.signIn")}
-                  </Button>
-                </Link>
+                // Don't show "Zaloguj się" button on landing page (login form is there)
+                !isLandingPage && (
+                  <Link href="/login">
+                    <Button variant="default" size="sm">
+                      {t("auth.signIn")}
+                    </Button>
+                  </Link>
+                )
               )}
             </>
           )}
