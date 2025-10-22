@@ -84,15 +84,7 @@ export default function LoginPage() {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Hasło</Label>
-            <Link
-              href="/reset-password"
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              Zapomniałeś hasła?
-            </Link>
-          </div>
+          <Label htmlFor="password">Hasło</Label>
           <Input
             id="password"
             name="password"
@@ -124,11 +116,21 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <footer className="text-center text-sm text-muted-foreground">
-        Nie masz konta?{" "}
-        <Link href="/register" className="font-medium text-primary hover:underline">
-          Utwórz konto
-        </Link>
+      <footer className="flex flex-col gap-2 text-center text-sm text-muted-foreground">
+        <div>
+          Nie masz konta?{" "}
+          <Link href="/register" className="font-medium text-primary hover:underline">
+            Utwórz konto
+          </Link>
+        </div>
+        <div>
+          <Link
+            href="/reset-password"
+            className="font-medium text-primary hover:underline"
+          >
+            Zapomniałeś hasła?
+          </Link>
+        </div>
       </footer>
     </div>
   )
