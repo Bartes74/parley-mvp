@@ -64,8 +64,9 @@ export function ConversationWidget({
         // Start session with dynamic variables
         const conversationId = await conversation.startSession({
           agentId: elevenAgentId,
-          // Pass custom variables that will be sent to webhook
-          customVariables: {
+          connectionType: "webrtc",
+          // Pass dynamic variables that will be sent to webhook
+          dynamicVariables: {
             user_id: userId,
             session_id: sessionId,
             agent_db_id: agentDbId,
