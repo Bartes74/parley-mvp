@@ -50,11 +50,13 @@ export async function middleware(request: NextRequest) {
                      pathname.includes('/reset-password') ||
                      pathname.includes('/update-password');
 
-  const isPublicPage = isAuthPage;
+  // Root path is now the landing page (public)
+  const isRootPath = pathname === '/' || pathname === '/pl' || pathname === '/en';
+  const isPublicPage = isAuthPage || isRootPath;
 
-  // If user is authenticated and trying to access auth pages, redirect to home
-  if (user && isAuthPage) {
-    return NextResponse.redirect(new URL('/', request.url));
+  // If user is authenticated and trying to access auth pages or root, redirect to agents
+  if (user && (isAuthPage || isRootPath)) {
+    return NextResponse.redirect(new URL('/agents', request.url));
   }
 
   // If user is not authenticated and trying to access protected pages, redirect to login
