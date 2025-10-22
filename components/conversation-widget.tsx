@@ -23,72 +23,144 @@ export function ConversationWidget({
 }: ConversationWidgetProps) {
   const router = useRouter()
   const conversationRef = useRef<ElevenLabsConversation | null>(null)
+  const scriptRef = useRef<HTMLScriptElement | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isConnected, setIsConnected] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
 
   useEffect(() => {
-    // Load ElevenLabs SDK
-    const script = document.createElement("script")
-    script.src = "https://elevenlabs.io/convai-widget/index.js"
-    script.async = true
-    script.onload = initializeConversation
-    script.onerror = () => {
-      toast.error("Nie udało się załadować widżetu konwersacji")
-      setIsLoading(false)
+    let mounted = true
+
+    // Wait for SDK to be available with retry
+    const waitForSDK = async (retries = 10, delay = 300): Promise<boolean> => {
+      for (let i = 0; i < retries; i++) {
+        if (window.Elevenlabs?.Conversation) {
+          console.log(`[ElevenLabs] SDK loaded successfully (attempt ${i + 1})`)
+          return true
+        }
+        console.log(`[ElevenLabs] Waiting for SDK... (attempt ${i + 1}/${retries})`)
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+      return false
     }
-    document.body.appendChild(script)
+
+    // Load ElevenLabs SDK
+    const loadSDK = async () => {
+      try {
+        // Check if SDK is already loaded
+        if (window.Elevenlabs?.Conversation) {
+          console.log("[ElevenLabs] SDK already loaded")
+          if (mounted) {
+            await initializeConversation()
+          }
+          return
+        }
+
+        // Load script
+        console.log("[ElevenLabs] Loading SDK...")
+        const script = document.createElement("script")
+        script.src = "https://elevenlabs.io/convai-widget/index.js"
+        script.async = true
+
+        script.onload = async () => {
+          console.log("[ElevenLabs] Script loaded, waiting for SDK...")
+          const sdkReady = await waitForSDK()
+          if (sdkReady && mounted) {
+            await initializeConversation()
+          } else if (!sdkReady && mounted) {
+            console.error("[ElevenLabs] SDK timeout")
+            toast.error("Nie udało się załadować widżetu konwersacji")
+            setIsLoading(false)
+          }
+        }
+
+        script.onerror = (error) => {
+          console.error("[ElevenLabs] Script load error:", error)
+          if (mounted) {
+            toast.error("Nie udało się załadować widżetu konwersacji")
+            setIsLoading(false)
+          }
+        }
+
+        scriptRef.current = script
+        document.body.appendChild(script)
+      } catch (error) {
+        console.error("[ElevenLabs] Load error:", error)
+        if (mounted) {
+          toast.error("Nie udało się załadować widżetu")
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadSDK()
 
     return () => {
+      mounted = false
       if (conversationRef.current) {
         conversationRef.current.endSession().catch(console.error)
       }
-      document.body.removeChild(script)
+      if (scriptRef.current && document.body.contains(scriptRef.current)) {
+        document.body.removeChild(scriptRef.current)
+      }
     }
   }, [])
 
   const initializeConversation = async () => {
     try {
-      if (!window.Elevenlabs) {
+      console.log("[ElevenLabs] Initializing conversation...")
+      console.log("[ElevenLabs] Agent ID:", elevenAgentId)
+      console.log("[ElevenLabs] Session ID:", sessionId)
+
+      if (!window.Elevenlabs?.Conversation) {
         throw new Error("ElevenLabs SDK not loaded")
       }
 
       const conversation = new window.Elevenlabs.Conversation({
         agentId: elevenAgentId,
         onConnect: () => {
-          console.log("Connected to ElevenLabs")
+          console.log("[ElevenLabs] Connected to agent")
           setIsConnected(true)
           setIsLoading(false)
         },
         onDisconnect: () => {
-          console.log("Disconnected from ElevenLabs")
+          console.log("[ElevenLabs] Disconnected from agent")
           setIsConnected(false)
+          toast.success("Rozmowa zakończona")
           // Redirect to sessions list after disconnect
           setTimeout(() => {
             router.push("/sessions")
           }, 2000)
         },
         onError: (error) => {
-          console.error("ElevenLabs error:", error)
+          console.error("[ElevenLabs] Conversation error:", error)
           toast.error("Wystąpił błąd podczas rozmowy")
           setIsLoading(false)
         },
         onMessage: (message) => {
-          console.log("Message:", message)
+          console.log("[ElevenLabs] Message:", message)
         },
       })
 
       conversationRef.current = conversation
 
-      // Start session with dynamic variables
-      await conversation.startSession({
+      console.log("[ElevenLabs] Starting session with variables:", {
         user_id: userId,
         session_id: sessionId,
         agent_db_id: agentDbId,
       })
+
+      // Start session with dynamic variables
+      const conversationId = await conversation.startSession({
+        user_id: userId,
+        session_id: sessionId,
+        agent_db_id: agentDbId,
+      })
+
+      console.log("[ElevenLabs] Session started, conversation ID:", conversationId)
     } catch (error) {
-      console.error("Error initializing conversation:", error)
-      toast.error("Nie udało się rozpocząć rozmowy")
+      console.error("[ElevenLabs] Initialization error:", error)
+      toast.error(`Nie udało się rozpocząć rozmowy: ${error instanceof Error ? error.message : 'Unknown error'}`)
       setIsLoading(false)
     }
   }
