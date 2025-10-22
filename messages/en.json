@@ -218,7 +218,21 @@
         "title": "Branding",
         "description": "Customize platform appearance",
         "logo": "Logo",
-        "uploadLogo": "Upload logo"
+        "uploadLogo": "Upload logo",
+        "primaryColor": "Primary color",
+        "primaryColorHelp": "Choose the color to be used as the main application color",
+        "logoLabel": "Logo (upload file or provide URL)",
+        "currentLogo": "Current logo",
+        "chooseFile": "Choose file",
+        "noFileChosen": "No file chosen",
+        "formatInfo": "Format: PNG, JPG, WEBP | Max size: 2MB | Recommended height: 80px",
+        "orSeparator": "or",
+        "logoUrlPlaceholder": "https://example.com/logo.png",
+        "logoUrlHelp": "Provide external logo URL",
+        "uploading": "Uploading and processing logo...",
+        "saving": "Saving...",
+        "saved": "Branding settings saved",
+        "fileTooLarge": "File is too large ({size}MB). Maximum size is 2MB."
       },
       "landing": {
         "title": "Landing Page",
@@ -226,14 +240,23 @@
         "headline": "Headline",
         "lead": "Lead text",
         "ctaLogin": "Login button text",
-        "ctaRegister": "Register button text"
+        "ctaRegister": "Register button text",
+        "saving": "Saving...",
+        "saved": "Landing page settings saved"
       },
       "email": {
         "title": "Email Notifications",
         "description": "Configure email notifications",
         "enabled": "Enabled",
         "senderName": "Sender name",
-        "testEmail": "Send test email"
+        "testEmail": "Send test email",
+        "enabledHelp": "Enable or disable email notifications for users",
+        "senderNameHelp": "Name that will appear as the email sender",
+        "testEmailSending": "Sending...",
+        "enabledTrue": "Enabled",
+        "enabledFalse": "Disabled",
+        "saving": "Saving...",
+        "saved": "Email settings saved"
       }
     },
     "webhooks": {

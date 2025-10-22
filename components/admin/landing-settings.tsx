@@ -42,7 +42,7 @@ export function LandingSettings({ initialSettings }: LandingSettingsProps) {
         throw new Error("Failed to save settings");
       }
 
-      toast.success("Ustawienia landing page zapisane");
+      toast.success(t("saved"));
     } catch (error) {
       console.error("Error saving landing settings:", error);
       toast.error("Nie udało się zapisać ustawień");
@@ -111,7 +111,7 @@ export function LandingSettings({ initialSettings }: LandingSettingsProps) {
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Zapisywanie..." : tCommon("save")}
+            {isSubmitting ? t("saving") : tCommon("save")}
           </Button>
         </form>
       </CardContent>

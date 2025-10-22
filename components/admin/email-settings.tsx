@@ -47,7 +47,7 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
         throw new Error("Failed to save settings");
       }
 
-      toast.success("Ustawienia email zapisane");
+      toast.success(t("saved"));
     } catch (error) {
       console.error("Error saving email settings:", error);
       toast.error("Nie udało się zapisać ustawień");
@@ -89,12 +89,12 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="true">Włączone</SelectItem>
-                <SelectItem value="false">Wyłączone</SelectItem>
+                <SelectItem value="true">{t("enabledTrue")}</SelectItem>
+                <SelectItem value="false">{t("enabledFalse")}</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground">
-              Włącz lub wyłącz powiadomienia e-mail dla użytkowników
+              {t("enabledHelp")}
             </p>
           </div>
 
@@ -109,13 +109,13 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
               required
             />
             <p className="text-sm text-muted-foreground">
-              Nazwa która będzie widoczna jako nadawca e-maili
+              {t("senderNameHelp")}
             </p>
           </div>
 
           <div className="flex gap-2">
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Zapisywanie..." : tCommon("save")}
+              {isSubmitting ? t("saving") : tCommon("save")}
             </Button>
             <Button
               type="button"
@@ -123,7 +123,7 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
               onClick={handleSendTestEmail}
               disabled={isSendingTest || !settings.enabled}
             >
-              {isSendingTest ? "Wysyłanie..." : t("testEmail")}
+              {isSendingTest ? t("testEmailSending") : t("testEmail")}
             </Button>
           </div>
         </form>

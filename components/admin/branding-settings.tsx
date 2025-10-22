@@ -73,7 +73,7 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
       // Update local state with new logo path
       setSettings({ ...settings, logo_path: logoPath });
       setLogoFile(null);
-      toast.success("Ustawienia brandingu zapisane");
+      toast.success(t("saved"));
     } catch (error) {
       console.error("Error saving branding settings:", error);
       toast.error(`Nie udało się zapisać ustawień: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -92,7 +92,7 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="primary_color">Kolor główny</Label>
+            <Label htmlFor="primary_color">{t("primaryColor")}</Label>
             <div className="flex gap-2 items-center">
               <Input
                 id="primary_color"
@@ -114,12 +114,12 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
               />
             </div>
             <p className="text-sm text-muted-foreground">
-              Wybierz kolor który będzie używany jako główny kolor aplikacji
+              {t("primaryColorHelp")}
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="logo">Logo (wgraj plik lub podaj URL)</Label>
+            <Label htmlFor="logo">{t("logoLabel")}</Label>
 
             {/* Current logo preview */}
             {settings.logo_path && (
@@ -137,7 +137,7 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
                   />
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  Obecne logo
+                  {t("currentLogo")}
                 </div>
               </div>
             )}
@@ -148,7 +148,7 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
                 htmlFor="logo_file"
                 className="inline-flex cursor-pointer items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
               >
-                Wybierz plik
+                {t("chooseFile")}
               </label>
               <input
                 id="logo_file"
@@ -160,7 +160,7 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
                     // Check file size (2MB limit)
                     const MAX_SIZE = 2 * 1024 * 1024; // 2MB
                     if (file.size > MAX_SIZE) {
-                      toast.error(`Plik jest za duży (${(file.size / 1024 / 1024).toFixed(2)}MB). Maksymalny rozmiar to 2MB.`);
+                      toast.error(t("fileTooLarge", { size: (file.size / 1024 / 1024).toFixed(2) }));
                       e.target.value = ''; // Clear input
                       return;
                     }
@@ -171,11 +171,11 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
                 className="hidden"
               />
               <span className="text-sm text-muted-foreground">
-                {logoFile ? logoFile.name : "Nie wybrano pliku"}
+                {logoFile ? logoFile.name : t("noFileChosen")}
               </span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Format: PNG, JPG, WEBP | Maksymalny rozmiar: 2MB | Zalecana wysokość: 80px
+              {t("formatInfo")}
             </p>
 
             {/* Or separator */}
@@ -185,7 +185,7 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  lub
+                  {t("orSeparator")}
                 </span>
               </div>
             </div>
@@ -198,21 +198,21 @@ export function BrandingSettings({ initialSettings }: BrandingSettingsProps) {
               onChange={(e) =>
                 setSettings({ ...settings, logo_path: e.target.value || null })
               }
-              placeholder="https://example.com/logo.png"
+              placeholder={t("logoUrlPlaceholder")}
             />
             <p className="text-sm text-muted-foreground">
-              Podaj URL zewnętrznego logo
+              {t("logoUrlHelp")}
             </p>
 
             {isUploadingLogo && (
               <p className="text-xs text-muted-foreground">
-                Przesyłanie i przetwarzanie logo...
+                {t("uploading")}
               </p>
             )}
           </div>
 
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Zapisywanie..." : tCommon("save")}
+            {isSubmitting ? t("saving") : tCommon("save")}
           </Button>
         </form>
       </CardContent>

@@ -218,7 +218,21 @@
         "title": "Branding",
         "description": "Dostosuj wygląd platformy",
         "logo": "Logo",
-        "uploadLogo": "Wgraj logo"
+        "uploadLogo": "Wgraj logo",
+        "primaryColor": "Kolor główny",
+        "primaryColorHelp": "Wybierz kolor który będzie używany jako główny kolor aplikacji",
+        "logoLabel": "Logo (wgraj plik lub podaj URL)",
+        "currentLogo": "Obecne logo",
+        "chooseFile": "Wybierz plik",
+        "noFileChosen": "Nie wybrano pliku",
+        "formatInfo": "Format: PNG, JPG, WEBP | Maksymalny rozmiar: 2MB | Zalecana wysokość: 80px",
+        "orSeparator": "lub",
+        "logoUrlPlaceholder": "https://example.com/logo.png",
+        "logoUrlHelp": "Podaj URL zewnętrznego logo",
+        "uploading": "Przesyłanie i przetwarzanie logo...",
+        "saving": "Zapisywanie...",
+        "saved": "Ustawienia brandingu zapisane",
+        "fileTooLarge": "Plik jest za duży ({size}MB). Maksymalny rozmiar to 2MB."
       },
       "landing": {
         "title": "Landing Page",
@@ -226,14 +240,23 @@
         "headline": "Nagłówek",
         "lead": "Tekst główny",
         "ctaLogin": "Tekst przycisku logowania",
-        "ctaRegister": "Tekst przycisku rejestracji"
+        "ctaRegister": "Tekst przycisku rejestracji",
+        "saving": "Zapisywanie...",
+        "saved": "Ustawienia landing page zapisane"
       },
       "email": {
         "title": "Powiadomienia E-mail",
         "description": "Konfiguruj powiadomienia e-mail",
         "enabled": "Włączone",
         "senderName": "Nazwa nadawcy",
-        "testEmail": "Wyślij testowy e-mail"
+        "testEmail": "Wyślij testowy e-mail",
+        "enabledHelp": "Włącz lub wyłącz powiadomienia e-mail dla użytkowników",
+        "senderNameHelp": "Nazwa która będzie widoczna jako nadawca e-maili",
+        "testEmailSending": "Wysyłanie...",
+        "enabledTrue": "Włączone",
+        "enabledFalse": "Wyłączone",
+        "saving": "Zapisywanie...",
+        "saved": "Ustawienia email zapisane"
       }
     },
     "webhooks": {
