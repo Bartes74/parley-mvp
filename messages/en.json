@@ -178,13 +178,27 @@
       }
     },
     "sessions": {
-      "title": "All Sessions",
+      "title": "All Conversations",
       "filterByUser": "Filter by user",
       "filterByAgent": "Filter by agent",
       "filterByStatus": "Filter by status",
       "allUsers": "All users",
       "allAgents": "All agents",
-      "allStatuses": "All statuses"
+      "allStatuses": "All statuses",
+      "description": "Overview of all conversations in the system",
+      "searchPlaceholder": "Search by title or user email...",
+      "statusCompleted": "Completed",
+      "statusPending": "Pending",
+      "statusError": "Error",
+      "user": "User",
+      "agent": "Agent",
+      "status": "Status",
+      "started": "Started",
+      "actions": "Actions",
+      "view": "View",
+      "noSessions": "No conversations",
+      "loading": "Loading...",
+      "resultsCount": "{count, plural, =0 {No results} one {# result} other {# results}}"
     },
     "settings": {
       "title": "Settings",

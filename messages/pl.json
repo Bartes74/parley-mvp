@@ -184,7 +184,21 @@
       "filterByStatus": "Filtruj po statusie",
       "allUsers": "Wszyscy użytkownicy",
       "allAgents": "Wszyscy agenci",
-      "allStatuses": "Wszystkie statusy"
+      "allStatuses": "Wszystkie statusy",
+      "description": "Przegląd wszystkich rozmów w systemie",
+      "searchPlaceholder": "Szukaj po tytule lub email użytkownika...",
+      "statusCompleted": "Zakończona",
+      "statusPending": "W trakcie",
+      "statusError": "Błąd",
+      "user": "Użytkownik",
+      "agent": "Agent",
+      "status": "Status",
+      "started": "Rozpoczęta",
+      "actions": "Akcje",
+      "view": "Zobacz",
+      "noSessions": "Brak rozmów",
+      "loading": "Ładowanie...",
+      "resultsCount": "{count, plural, =0 {Brak wyników} one {# wynik} few {# wyniki} many {# wyników} other {# wyników}}"
     },
     "settings": {
       "title": "Ustawienia",
