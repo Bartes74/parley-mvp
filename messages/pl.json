@@ -157,7 +157,10 @@
         "isActive": "Aktywny",
         "displayOrder": "Kolejność wyświetlania",
         "chooseFile": "Wybierz plik",
-        "noFileChosen": "Nie wybrano pliku"
+        "noFileChosen": "Nie wybrano pliku",
+        "instructions": "Instrukcje",
+        "instructionsPlaceholder": "Wpisz instrukcje dla użytkownika przed rozpoczęciem rozmowy...",
+        "instructionsHelp": "Te instrukcje zostaną wyświetlone użytkownikowi na stronie agenta przed rozpoczęciem rozmowy."
       },
       "status": {
         "active": "Aktywny",

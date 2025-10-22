@@ -157,7 +157,10 @@
         "isActive": "Active",
         "displayOrder": "Display order",
         "chooseFile": "Choose file",
-        "noFileChosen": "No file chosen"
+        "noFileChosen": "No file chosen",
+        "instructions": "Instructions",
+        "instructionsPlaceholder": "Enter instructions for the user before starting the conversation...",
+        "instructionsHelp": "These instructions will be displayed to the user on the agent page before starting the conversation."
       },
       "status": {
         "active": "Active",

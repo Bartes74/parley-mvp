@@ -74,6 +74,7 @@ export async function PATCH(
   const {
     title,
     shortDescription,
+    instructions,
     difficulty,
     language,
     tags,
@@ -89,6 +90,7 @@ export async function PATCH(
     .update({
       title,
       short_description: shortDescription,
+      instructions: instructions || null,
       difficulty,
       language,
       tags,

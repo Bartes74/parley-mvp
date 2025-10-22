@@ -22,6 +22,7 @@ interface AgentFormProps {
     id: string;
     title: string;
     shortDescription: string;
+    instructions: string;
     difficulty: string;
     language: string;
     tags: string[];
@@ -41,6 +42,7 @@ export function AgentForm({ agent }: AgentFormProps) {
   const [formData, setFormData] = useState({
     title: agent?.title || "",
     shortDescription: agent?.shortDescription || "",
+    instructions: agent?.instructions || "",
     difficulty: agent?.difficulty || "beginner",
     language: agent?.language || "pl",
     tags: agent?.tags?.join(", ") || "",
@@ -104,6 +106,7 @@ export function AgentForm({ agent }: AgentFormProps) {
         body: JSON.stringify({
           title: formData.title,
           shortDescription: formData.shortDescription,
+          instructions: formData.instructions,
           difficulty: formData.difficulty,
           language: formData.language,
           tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
@@ -166,6 +169,22 @@ export function AgentForm({ agent }: AgentFormProps) {
               required
               rows={3}
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="instructions">{t("instructions")}</Label>
+            <Textarea
+              id="instructions"
+              value={formData.instructions}
+              onChange={(e) =>
+                setFormData({ ...formData, instructions: e.target.value })
+              }
+              placeholder={t("instructionsPlaceholder")}
+              rows={5}
+            />
+            <p className="text-sm text-muted-foreground">
+              {t("instructionsHelp")}
+            </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">

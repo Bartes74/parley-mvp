@@ -65,6 +65,7 @@ export async function POST(request: Request) {
   const {
     title,
     shortDescription,
+    instructions,
     difficulty,
     language,
     tags,
@@ -80,6 +81,7 @@ export async function POST(request: Request) {
     .insert({
       title,
       short_description: shortDescription,
+      instructions: instructions || null,
       difficulty,
       language,
       tags: tags || [],

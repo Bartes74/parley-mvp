@@ -55,6 +55,7 @@ export default async function EditAgentPage({
           id: agent.id,
           title: agent.title,
           shortDescription: agent.short_description,
+          instructions: agent.instructions || "",
           difficulty: agent.difficulty,
           language: agent.language,
           tags: agent.tags || [],

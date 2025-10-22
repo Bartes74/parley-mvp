@@ -158,18 +158,24 @@ export default async function AgentPage({ params }: AgentPageProps) {
               <CardDescription>{t("instructions")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="prose prose-sm dark:prose-invert max-w-none">
-                <p>
-                  Ten scenariusz rozmowy pozwoli Ci ćwiczyć umiejętności
-                  komunikacyjne w realistycznym środowisku. Po zakończeniu
-                  rozmowy otrzymasz szczegółowy feedback oraz transkrypcję.
-                </p>
-                <ul>
-                  <li>Kliknij przycisk START aby rozpocząć</li>
-                  <li>Rozmawiaj naturalnie z agentem</li>
-                  <li>Po zakończeniu otrzymasz analizę i feedback</li>
-                </ul>
-              </div>
+              {agent.instructions ? (
+                <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap">
+                  {agent.instructions}
+                </div>
+              ) : (
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <p>
+                    Ten scenariusz rozmowy pozwoli Ci ćwiczyć umiejętności
+                    komunikacyjne w realistycznym środowisku. Po zakończeniu
+                    rozmowy otrzymasz szczegółowy feedback oraz transkrypcję.
+                  </p>
+                  <ul>
+                    <li>Kliknij przycisk START aby rozpocząć</li>
+                    <li>Rozmawiaj naturalnie z agentem</li>
+                    <li>Po zakończeniu otrzymasz analizę i feedback</li>
+                  </ul>
+                </div>
+              )}
 
               {/* Start Button */}
               <StartSessionButton
