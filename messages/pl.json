@@ -162,7 +162,9 @@
       "status": {
         "active": "Aktywny",
         "inactive": "Nieaktywny"
-      }
+      },
+      "editAgent": "Edytuj Agenta",
+      "editAgentDescription": "Zaktualizuj informacje o agencie"
     },
     "users": {
       "title": "Zarządzanie Użytkownikami",

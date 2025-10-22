@@ -1,6 +1,47 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
+// GET - Get single agent (admin only)
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  // Check authentication and admin role
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "admin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  // Fetch agent
+  const { data: agent, error } = await supabase
+    .from("agents")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !agent) {
+    return NextResponse.json({ error: "Agent not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ agent });
+}
+
 // PATCH - Update agent (admin only)
 export async function PATCH(
   request: Request,

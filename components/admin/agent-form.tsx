@@ -21,14 +21,14 @@ interface AgentFormProps {
   agent?: {
     id: string;
     title: string;
-    short_description: string;
+    shortDescription: string;
     difficulty: string;
     language: string;
     tags: string[];
-    eleven_agent_id: string;
-    is_active: boolean;
-    display_order: number;
-    thumbnail_path: string | null;
+    elevenAgentId: string;
+    isActive: boolean;
+    displayOrder: number;
+    thumbnailPath: string;
   };
 }
 
@@ -40,14 +40,14 @@ export function AgentForm({ agent }: AgentFormProps) {
 
   const [formData, setFormData] = useState({
     title: agent?.title || "",
-    shortDescription: agent?.short_description || "",
+    shortDescription: agent?.shortDescription || "",
     difficulty: agent?.difficulty || "beginner",
     language: agent?.language || "pl",
     tags: agent?.tags?.join(", ") || "",
-    elevenAgentId: agent?.eleven_agent_id || "",
-    isActive: agent?.is_active ?? true,
-    displayOrder: agent?.display_order || 0,
-    thumbnailPath: agent?.thumbnail_path || "",
+    elevenAgentId: agent?.elevenAgentId || "",
+    isActive: agent?.isActive ?? true,
+    displayOrder: agent?.displayOrder || 0,
+    thumbnailPath: agent?.thumbnailPath || "",
   });
 
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
