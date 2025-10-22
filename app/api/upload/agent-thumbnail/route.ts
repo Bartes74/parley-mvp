@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import sharp from "sharp";
 
+// Force Node.js runtime for Sharp compatibility (must be at top level)
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 const TARGET_WIDTH = 800;
 const TARGET_HEIGHT = 450; // 16:9 aspect ratio
 
@@ -105,7 +109,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// Force Node.js runtime for Sharp compatibility
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
