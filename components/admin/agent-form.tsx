@@ -235,7 +235,7 @@ export function AgentForm({ agent }: AgentFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="thumbnail">
-              Miniatura (zalecany rozmiar: 800x450px, proporcje 16:9)
+              Miniatura (zalecany rozmiar: 800x450px, proporcje 16:9, max 4MB)
             </Label>
             <div className="flex items-center gap-4">
               <label
@@ -251,6 +251,13 @@ export function AgentForm({ agent }: AgentFormProps) {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
+                    // Check file size (4MB limit)
+                    const MAX_SIZE = 4 * 1024 * 1024; // 4MB
+                    if (file.size > MAX_SIZE) {
+                      toast.error(`Plik jest za duży (${(file.size / 1024 / 1024).toFixed(2)}MB). Maksymalny rozmiar to 4MB.`);
+                      e.target.value = ''; // Clear input
+                      return;
+                    }
                     setThumbnailFile(file);
                   }
                 }}

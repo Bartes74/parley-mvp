@@ -31,6 +31,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File must be an image" }, { status: 400 });
     }
 
+    // Validate file size (4MB limit for Vercel)
+    const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        {
+          error: "File too large",
+          message: `File size ${(file.size / 1024 / 1024).toFixed(2)}MB exceeds 4MB limit. Please use a smaller image.`,
+          maxSize: "4MB"
+        },
+        { status: 413 }
+      );
+    }
+
     // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
