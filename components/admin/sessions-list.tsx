@@ -119,11 +119,16 @@ export function SessionsList({
   const filteredSessions = sessions.filter((session) => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
-    const title =
-      session.title_override || session.agents.title || "";
+
+    const agent = Array.isArray(session.agents)
+      ? session.agents[0]
+      : session.agents;
+    const title = session.title_override || agent?.title || "";
+
     const email = Array.isArray(session.profiles)
       ? session.profiles[0]?.email || ""
       : session.profiles?.email || "";
+
     return title.toLowerCase().includes(query) || email.toLowerCase().includes(query);
   });
 
