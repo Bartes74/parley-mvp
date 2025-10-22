@@ -11,27 +11,15 @@ Platforma do treningu rozmów (symulacje z agentami głosowymi ElevenLabs) obejm
 
 **Brand & UI (light/dark)**
 
-- **Nazwa**: Parley
-- **Paleta A „Graphite & Emerald”** (zmodyfikowana „złamana biel” w light):
-  - **Light**
-    - --bg: #F4F6F8 (złamana biel jako tło strony)
-    - --surface: #FFFFFF (karty/modal)
-    - --text: #0F1115
-    - --muted: #6A7280
-    - --border: #E6E8EE
-    - **Primary**: #0BA37F / hover #089372 / soft #E6F7F2
-    - **Accent**: #3B82F6
-  - **Dark**
-    - --bg: #0F1115
-    - --surface: #161A20
-    - --text: #F2F4F7
-    - --muted: #9AA3B2
-    - --border: #263041
-    - **Primary**: #0BA37F / hover #0AA07B / soft #0F2B25
-- **Typografia**: Manrope (nagłówki 600/700), Inter (treści 400/500), JetBrains Mono (opcjonalnie do timestampów).
-- **Ikony**: Lucide.
-- **Tryby**: przełącznik **PL/EN** i **Light/Dark** w nagłówku.
-- **Desktop-only** (Chrome/Edge/Safari).
+- **Nazwa i logo serwisu:** konfigurowane w panelu admina (`Settings > Landing` + `Settings > Branding`). Domyślnie nazwa „Parley” bez logo; upload grafiki zapisuje ją w Supabase Storage (`logos`) i renderuje w headerze/public headerze.
+- **Primary color:** ustawiany jako hex w panelu (`Settings > Branding`). Na backendzie nadpisujemy zmienne CSS (`--primary`, `--primary-hover`, `--primary-soft`, `--primary-foreground`, `--ring`), z których korzystają wszystkie komponenty (CTA, linki, badge).
+- **Fallback paleta** (gdy brak ustawień brandingu):
+  - Light – `--background: #F4F6F8`, `--surface: #FFFFFF`, `--text: #0F1115`, `--muted: #6A7280`, `--border: #E6E8EE`, `--primary: #0BA37F`.
+  - Dark – `--background: #0F1115`, `--surface: #161A20`, `--text: #F2F4F7`, `--muted: #9AA3B2`, `--border: #263041`, `--primary: #0BA37F`.
+- **Typografia:** Manrope (nagłówki 600/700), Inter (treści 400/500), JetBrains Mono (timestampy, tekst mono).
+- **Ikony:** Lucide.
+- **Tryby:** przełącznik **PL/EN** (next-intl) oraz **Light/Dark** (next-themes).
+- **Docelowe urządzenia:** desktop (Chrome / Edge / Safari).
 
 
 
@@ -106,11 +94,13 @@ Platforma do treningu rozmów (symulacje z agentami głosowymi ElevenLabs) obejm
 
 1. **Branding**
 
-- Upload logo (SVG/PNG), wybór palety A (light/dark) + aktywna „złamana biel” dla light, podgląd.
+- Konfiguracja logo (upload PNG/JPG/WebP do Supabase Storage `logos` z automatycznym resize do 80px).  
+- Pole `primary_color` (hex) aktualizuje zmienne CSS (`--primary`, `--primary-hover`, `--primary-soft`, `--primary-foreground`, `--ring`) wykorzystywane w całym UI.
 
 1. **Landing**
 
-- Edycja: nagłówek, lead, CTA (logowanie/rejestracja), grafika hero (opcjonalnie upload).
+- Edycja nazwy serwisu, nagłówka, sub-claim, leadu oraz tekstów CTA (login/register).  
+- Zmiany są renderowane server-side – landing i header od razu pobierają aktualne wartości i kolor.
 
 1. **Powiadomienia e-mail**
 

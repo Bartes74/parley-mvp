@@ -17,3 +17,6 @@ Follow the Conventional Commit style seen in history (`feat: improve landing pag
 
 ## Supabase & Environment Notes
 Store secrets in `.env.local` and keep that file untracked. Whenever schema or RLS rules change, update the matching migration and refresh `supabase/README.md`. For local admin access, seed the user `bartek@dajer.pl` or hit `/api/create-test-admin` while `npm run dev` is running.
+
+## Branding & Landing Configuration
+Branding data is stored in the `settings` table (`branding`, `landing`, `email`). The shared parser in `lib/settings.ts` normalises these records and feeds them to the App Router layout. `app/[locale]/layout.tsx` injects CSS variables (`--primary`, `--primary-hover`, `--primary-soft`, `--primary-foreground`, `--ring`) so shadcn/ui components automatically adopt the configured colour. Headers (`components/header.tsx`, `components/public-header.tsx`) render the uploaded logo from the `logos` bucket or fall back to an initial. The landing page (`app/[locale]/page.tsx`) reuses the same settings to colour the headline and populate the CTA texts. After adjusting values in the admin panel (`Settings > Branding / Landing`), refresh the page to see the new theme.
