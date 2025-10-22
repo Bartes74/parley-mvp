@@ -4,18 +4,8 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
 const nextConfig: NextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['sharp'],
-  },
-  // Increase body size limit for image uploads (in bytes)
-  serverRuntimeConfig: {
-    bodySizeLimit: '10mb',
-  },
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
+  // Sharp needs to be external package for Vercel
+  serverExternalPackages: ['sharp'],
 };
 
 export default withNextIntl(nextConfig);

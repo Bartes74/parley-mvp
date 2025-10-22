@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     const filepath = `${filename}`;
 
     // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("agent-thumbnails")
       .upload(filepath, processedImage, {
         contentType: "image/jpeg",
