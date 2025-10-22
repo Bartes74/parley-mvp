@@ -107,7 +107,7 @@ export function ConversationWidget({
   const toggleMute = () => {
     if (conversation.status === "connected") {
       const newVolume = isMuted ? 1 : 0
-      conversation.setVolume(newVolume)
+      conversation.setVolume({ volume: newVolume })
       setIsMuted(!isMuted)
     }
   }
