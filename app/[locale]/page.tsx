@@ -33,28 +33,38 @@ export default async function Home() {
 
   // Extract landing settings
   const landing = settingsObject.landing as {
+    serviceName?: string;
     headline?: string;
+    subClaim?: string;
     lead?: string;
     cta_login?: string;
     cta_register?: string;
   } | undefined;
 
-  const headline = landing?.headline || "Parley";
-  const lead = landing?.lead || "Platforma do treningu rozmów z AI";
+  const serviceName = landing?.serviceName || "Parley";
+  const headline = landing?.headline || "Trenuj rozmowy, które liczą się naprawdę";
+  const subClaim = landing?.subClaim || "Ćwicz z agentami AI i otrzymuj szczegółowy feedback";
+  const lead = landing?.lead || "Rozpocznij swoją podróż do perfekcji komunikacji";
   const ctaRegister = landing?.cta_register || "Utwórz konto";
 
-  console.log("[Landing] Final values:", { headline, lead, ctaRegister });
+  console.log("[Landing] Final values:", { serviceName, headline, subClaim, lead, ctaRegister });
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:py-24">
-      <div className="grid gap-8 lg:grid-cols-[2fr,1fr] lg:gap-16 items-start max-w-7xl mx-auto">
-        {/* Left side - Hero content (70%) */}
-        <div className="flex flex-col justify-start space-y-8 lg:py-12">
+    <div className="container mx-auto px-4 py-12 lg:py-24 max-w-7xl">
+      <div className="grid gap-8 lg:grid-cols-[2fr,1fr] lg:gap-12 items-start">
+        {/* Left side - Hero content (66%) */}
+        <div className="flex flex-col justify-start space-y-6">
           <div className="space-y-4">
+            {/* Headline - duża czcionka */}
             <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
               {headline}
             </h1>
+            {/* Sub-claim - średnia czcionka (jak poprzedni lead) */}
             <p className="text-xl text-muted-foreground sm:text-2xl lg:text-3xl max-w-2xl">
+              {subClaim}
+            </p>
+            {/* Lead - mniejsza czcionka */}
+            <p className="text-base text-muted-foreground sm:text-lg lg:text-xl max-w-2xl">
               {lead}
             </p>
           </div>
@@ -66,8 +76,8 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* Right side - Login form (30%) */}
-        <div className="flex items-start lg:py-12">
+        {/* Right side - Login form (33%) */}
+        <div className="flex items-start">
           <LandingLoginForm />
         </div>
       </div>

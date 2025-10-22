@@ -44,8 +44,10 @@ export default async function AdminSettingsPage() {
     primary_color: "#10b981",
   };
 
-  const landingSettings = (settingsObject.landing as { headline: string; lead: string; cta_login: string; cta_register: string } | undefined) || {
-    headline: "Parley",
+  const landingSettings = (settingsObject.landing as { serviceName: string; headline: string; subClaim: string; lead: string; cta_login: string; cta_register: string } | undefined) || {
+    serviceName: "Parley",
+    headline: "Trenuj rozmowy, które liczą się naprawdę",
+    subClaim: "Ćwicz z agentami AI i otrzymuj szczegółowy feedback",
     lead: "Platforma do treningu rozmów z AI",
     cta_login: "Zaloguj się",
     cta_register: "Utwórz konto",

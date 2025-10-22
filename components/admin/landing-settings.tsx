@@ -11,7 +11,9 @@ import { toast } from "sonner";
 
 interface LandingSettingsProps {
   initialSettings: {
+    serviceName: string;
     headline: string;
+    subClaim: string;
     lead: string;
     cta_login: string;
     cta_register: string;
@@ -60,6 +62,22 @@ export function LandingSettings({ initialSettings }: LandingSettingsProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
+            <Label htmlFor="serviceName">{t("serviceName")}</Label>
+            <Input
+              id="serviceName"
+              value={settings.serviceName}
+              onChange={(e) =>
+                setSettings({ ...settings, serviceName: e.target.value })
+              }
+              placeholder="Parley"
+              required
+            />
+            <p className="text-sm text-muted-foreground">
+              {t("serviceNameHelp")}
+            </p>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="headline">{t("headline")}</Label>
             <Input
               id="headline"
@@ -69,6 +87,25 @@ export function LandingSettings({ initialSettings }: LandingSettingsProps) {
               }
               required
             />
+            <p className="text-sm text-muted-foreground">
+              {t("headlineHelp")}
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="subClaim">{t("subClaim")}</Label>
+            <Textarea
+              id="subClaim"
+              value={settings.subClaim}
+              onChange={(e) =>
+                setSettings({ ...settings, subClaim: e.target.value })
+              }
+              rows={2}
+              required
+            />
+            <p className="text-sm text-muted-foreground">
+              {t("subClaimHelp")}
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -82,6 +119,9 @@ export function LandingSettings({ initialSettings }: LandingSettingsProps) {
               rows={3}
               required
             />
+            <p className="text-sm text-muted-foreground">
+              {t("leadHelp")}
+            </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
