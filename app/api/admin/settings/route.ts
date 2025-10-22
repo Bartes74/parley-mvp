@@ -37,7 +37,7 @@ export async function GET() {
   const settingsObject = settings.reduce((acc, item) => {
     acc[item.key] = item.value;
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, unknown>);
 
   return NextResponse.json({ settings: settingsObject });
 }

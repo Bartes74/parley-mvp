@@ -36,22 +36,22 @@ export default async function AdminSettingsPage() {
   const settingsObject = settings?.reduce((acc, item) => {
     acc[item.key] = item.value;
     return acc;
-  }, {} as Record<string, any>) || {};
+  }, {} as Record<string, unknown>) || {};
 
   // Extract individual settings with defaults
-  const brandingSettings = settingsObject.branding || {
+  const brandingSettings = (settingsObject.branding as { logo_path: string | null; primary_color: string } | undefined) || {
     logo_path: null,
     primary_color: "#10b981",
   };
 
-  const landingSettings = settingsObject.landing || {
+  const landingSettings = (settingsObject.landing as { headline: string; lead: string; cta_login: string; cta_register: string } | undefined) || {
     headline: "Parley",
     lead: "Platforma do treningu rozmów z AI",
     cta_login: "Zaloguj się",
     cta_register: "Utwórz konto",
   };
 
-  const emailSettings = settingsObject.email || {
+  const emailSettings = (settingsObject.email as { enabled: boolean; sender_name: string } | undefined) || {
     enabled: false,
     sender_name: "Parley",
   };
