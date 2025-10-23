@@ -44,7 +44,7 @@ export async function getElevenLabsWebhookSecret(): Promise<string | null> {
   try {
     const { data, error } = await client
       .from("settings")
-      .select("value")
+      .select<{ value: ElevenLabsSettingsValue | null }>("value")
       .eq("key", "elevenlabs")
       .maybeSingle()
 
@@ -55,8 +55,7 @@ export async function getElevenLabsWebhookSecret(): Promise<string | null> {
       return fallback
     }
 
-    const secret =
-      (data?.value as ElevenLabsSettingsValue | null)?.secret?.trim() || ""
+    const secret = data?.value?.secret?.trim() || ""
 
     return secret || fallback
   } catch (err) {
