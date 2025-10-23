@@ -21,8 +21,8 @@ type ElevenLabsTranscriptEntry = {
   timestamp?: string | null;
 };
 
-type StoredWebhookEvent = {
-  payload: {
+type ElevenLabsWebhookPayload = {
+  data?: {
     analysis?: ElevenLabsAnalysis | null;
     transcript?: ElevenLabsTranscriptEntry[] | null;
     conversation_initiation_client_data?: {
@@ -31,6 +31,10 @@ type StoredWebhookEvent = {
       } | null;
     } | null;
   } | null;
+};
+
+type StoredWebhookEvent = {
+  payload: ElevenLabsWebhookPayload | null;
   created_at: string;
 };
 
@@ -134,8 +138,10 @@ export default async function SessionDetailPage({
   const backHref = isOwner ? "/sessions" : "/admin/sessions";
 
   const fallbackPayload = webhookEvents?.find((event) => {
-    const sessionIdFromPayload = event.payload?.conversation_initiation_client_data?.dynamic_variables?.session_id;
-    return sessionIdFromPayload === id && event.payload?.analysis;
+    const payloadData = event.payload?.data;
+    const sessionIdFromPayload =
+      payloadData?.conversation_initiation_client_data?.dynamic_variables?.session_id;
+    return sessionIdFromPayload === id && payloadData?.analysis;
   })?.payload;
 
   const analysisFromDb = feedback
@@ -146,17 +152,19 @@ export default async function SessionDetailPage({
       }
     : null;
 
-  const analysisFromWebhook = fallbackPayload?.analysis
+  const payloadData = fallbackPayload?.data;
+
+  const analysisFromWebhook = payloadData?.analysis
     ? {
-        scoreOverall: fallbackPayload.analysis.score_overall ?? null,
-        scoreBreakdown: fallbackPayload.analysis.criteria ?? null,
+        scoreOverall: payloadData.analysis.score_overall ?? null,
+        scoreBreakdown: payloadData.analysis.criteria ?? null,
         rawFeedback: {
           summary:
-            fallbackPayload.analysis.transcript_summary ||
-            fallbackPayload.analysis.call_summary_title ||
+            payloadData.analysis.transcript_summary ||
+            payloadData.analysis.call_summary_title ||
             undefined,
-          tips: fallbackPayload.analysis.tips ?? [],
-          criteria: fallbackPayload.analysis.criteria ?? undefined,
+          tips: payloadData.analysis.tips ?? [],
+          criteria: payloadData.analysis.criteria ?? undefined,
         },
       }
     : null;
@@ -171,8 +179,8 @@ export default async function SessionDetailPage({
         .filter((entry) => entry.message)
     : null;
 
-  const transcriptFromWebhook: TranscriptMessage[] | null = Array.isArray(fallbackPayload?.transcript)
-    ? (fallbackPayload!.transcript ?? [])
+  const transcriptFromWebhook: TranscriptMessage[] | null = Array.isArray(payloadData?.transcript)
+    ? (payloadData!.transcript ?? [])
         .map((entry) => ({
           role: (entry.role === "user" ? "user" : "agent") as "user" | "agent",
           message: entry.message || entry.original_message || "",

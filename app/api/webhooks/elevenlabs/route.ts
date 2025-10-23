@@ -2,33 +2,41 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 // Types based on parley.md specification
-interface DynamicVariables {
-  user_id: string;
-  session_id: string;
-  agent_db_id: string;
-}
+type ElevenLabsDynamicVariables = {
+  user_id?: string | null;
+  session_id?: string | null;
+  agent_db_id?: string | null;
+};
 
-interface TranscriptEntry {
-  speaker: "user" | "agent";
-  text: string;
-  ts_ms: number;
-}
+type ElevenLabsTranscriptEntry = {
+  role?: string | null;
+  message?: string | null;
+  original_message?: string | null;
+  timestamp?: string | null;
+};
 
-interface Analysis {
-  score_overall: number;
-  criteria: Record<string, number>;
-  summary: string;
-  tips: string[];
-}
+type ElevenLabsAnalysis = {
+  score_overall?: number | null;
+  criteria?: Record<string, number> | null;
+  summary?: string | null;
+  tips?: string[] | null;
+  transcript_summary?: string | null;
+  call_summary_title?: string | null;
+};
 
-interface WebhookPayload {
-  event: string;
-  conversation_initiation_client_data: {
-    dynamic_variables: DynamicVariables;
-  };
-  transcript: TranscriptEntry[];
-  analysis: Analysis;
-}
+type ElevenLabsPayloadData = {
+  analysis?: ElevenLabsAnalysis | null;
+  transcript?: ElevenLabsTranscriptEntry[] | null;
+  conversation_initiation_client_data?: {
+    dynamic_variables?: ElevenLabsDynamicVariables | null;
+  } | null;
+};
+
+type ElevenLabsWebhookPayload = {
+  type?: string;
+  event_timestamp?: number;
+  data?: ElevenLabsPayloadData | null;
+};
 
 /**
  * POST /api/webhooks/elevenlabs
@@ -44,21 +52,23 @@ export async function POST(request: NextRequest) {
 
   try {
     const rawBody = await request.text();
-    const payload: WebhookPayload = JSON.parse(rawBody);
+    const payload = JSON.parse(rawBody) as ElevenLabsWebhookPayload;
+    const payloadData = payload.data ?? {};
 
-    console.log("[Webhook] Received event:", payload.event);
+    console.log("[Webhook] Received event of type:", payload.type ?? "unknown");
 
     // Extract dynamic variables
-    const { session_id } =
-      payload.conversation_initiation_client_data?.dynamic_variables || {};
+    const dynamicVariables =
+      payloadData.conversation_initiation_client_data?.dynamic_variables || {};
+    const session_id = dynamicVariables.session_id || null;
 
     if (!session_id) {
       console.warn("[Webhook] Missing session_id in dynamic variables - ignoring event");
 
       await supabase.from("webhook_events").insert({
         provider: "elevenlabs",
-        event_type: payload.event,
-        payload: payload,
+        event_type: payload.type || "unknown",
+        payload,
         status: "ignored",
         error: "Missing session_id in dynamic variables",
       });
@@ -86,8 +96,8 @@ export async function POST(request: NextRequest) {
 
       await supabase.from("webhook_events").insert({
         provider: "elevenlabs",
-        event_type: payload.event,
-        payload: payload,
+        event_type: payload.type || "unknown",
+        payload,
         status: "failed",
         error: `Session not found: ${session_id}`,
       });
@@ -99,13 +109,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Save transcript (UPSERT for idempotency)
-    if (payload.transcript && payload.transcript.length > 0) {
+    if (payloadData.transcript && payloadData.transcript.length > 0) {
       const { error: transcriptError } = await supabase
         .from("session_transcripts")
         .upsert(
           {
             session_id: session_id,
-            transcript: payload.transcript,
+            transcript: payloadData.transcript,
           },
           {
             onConflict: "session_id",
@@ -121,15 +131,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Save feedback/analysis (UPSERT for idempotency)
-    if (payload.analysis) {
+    if (payloadData.analysis) {
       const { error: feedbackError } = await supabase
         .from("session_feedback")
         .upsert(
           {
             session_id: session_id,
-            raw_feedback: payload.analysis,
-            score_overall: payload.analysis.score_overall,
-            score_breakdown: payload.analysis.criteria,
+            raw_feedback: payloadData.analysis,
+            score_overall: payloadData.analysis.score_overall ?? null,
+            score_breakdown: payloadData.analysis.criteria ?? null,
           },
           {
             onConflict: "session_id",
@@ -163,8 +173,8 @@ export async function POST(request: NextRequest) {
     // Log successful webhook event
     await supabase.from("webhook_events").insert({
       provider: "elevenlabs",
-      event_type: payload.event,
-      payload: payload,
+      event_type: payload.type || "unknown",
+      payload,
       status: "processed",
     });
 
