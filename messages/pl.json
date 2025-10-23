@@ -59,7 +59,10 @@
     "title": "Katalog agentów",
     "subtitle": "Wybierz scenariusz rozmowy i rozpocznij trening",
     "noAgents": "Brak dostępnych agentów",
-    "noAgentsDescription": "Skontaktuj się z administratorem w celu dodania agentów."
+    "noAgentsDescription": "Skontaktuj się z administratorem w celu dodania agentów.",
+    "filteringByTag": "Filtr: tag \"{tag}\"",
+    "clearTagFilter": "Wyczyść filtr",
+    "noAgentsWithTag": "Brak agentów z tagiem \"{tag}\""
   },
   "agent": {
     "start": "START",

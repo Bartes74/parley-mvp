@@ -15,6 +15,7 @@ interface AgentCardProps {
   }
   difficultyLabel: string
   languageLabel: string
+  activeTag?: string | null
 }
 
 const difficultyColors = {
@@ -23,7 +24,7 @@ const difficultyColors = {
   advanced: "bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-400",
 }
 
-export function AgentCard({ agent, difficultyLabel, languageLabel }: AgentCardProps) {
+export function AgentCard({ agent, difficultyLabel, languageLabel, activeTag }: AgentCardProps) {
   const thumbnailUrl = agent.thumbnailPath
     ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/agent-thumbnails/${agent.thumbnailPath}`
     : null
@@ -106,11 +107,21 @@ export function AgentCard({ agent, difficultyLabel, languageLabel }: AgentCardPr
         {agent.tags && agent.tags.length > 0 && (
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              {agent.tags.slice(0, 3).map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
+              {agent.tags.slice(0, 3).map((tag, index) => {
+                const isActive = activeTag === tag
+                const href = isActive ? "/agents" : `/agents?tag=${encodeURIComponent(tag)}`
+
+                return (
+                  <Link key={index} href={href} className="inline-block">
+                    <Badge
+                      variant={isActive ? "default" : "outline"}
+                      className="text-xs cursor-pointer"
+                    >
+                      {tag}
+                    </Badge>
+                  </Link>
+                )
+              })}
               {agent.tags.length > 3 && (
                 <Badge variant="outline" className="text-xs">
                   +{agent.tags.length - 3}

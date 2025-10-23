@@ -59,7 +59,10 @@
     "title": "Agent Catalog",
     "subtitle": "Choose a conversation scenario and start training",
     "noAgents": "No agents available",
-    "noAgentsDescription": "Contact your administrator to add agents."
+    "noAgentsDescription": "Contact your administrator to add agents.",
+    "filteringByTag": "Filtered by tag \"{tag}\"",
+    "clearTagFilter": "Clear filter",
+    "noAgentsWithTag": "No agents tagged \"{tag}\""
   },
   "agent": {
     "start": "START",
