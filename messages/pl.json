@@ -201,7 +201,6 @@
     },
     "settings": {
       "title": "Ustawienia",
-      "description": "Zarządzaj brandingiem, landing page, powiadomieniami e-mail i integracją ElevenLabs",
       "retention": {
         "title": "Retencja Danych",
         "description": "Określ jak długo przechowywać dane (0 = bezterminowo)",
@@ -265,18 +264,6 @@
         "enabledFalse": "Wyłączone",
         "saving": "Zapisywanie...",
         "saved": "Ustawienia email zapisane"
-      },
-      "elevenlabs": {
-        "title": "Integracja ElevenLabs",
-        "description": "Wklej sekret webhooka wygenerowany w ElevenLabs. Przechowujemy go w bazie i wykorzystujemy do weryfikacji nadchodzących rozmów.",
-        "secretLabel": "Secret webhooka",
-        "secretPlaceholder": "wsec_...",
-        "secretHelp": "Wklej wartość z ustawień webhooka w ElevenLabs.",
-        "secretHelpExisting": "Secret jest już zapisany. Podmień go tylko, jeśli wygenerowałeś nowy w ElevenLabs.",
-        "save": "Zapisz secret",
-        "saving": "Zapisywanie...",
-        "saved": "Secret ElevenLabs zapisany",
-        "saveError": "Nie udało się zapisać secretu ElevenLabs"
       }
     },
     "webhooks": {

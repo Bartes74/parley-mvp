@@ -18,14 +18,9 @@ export interface LandingSettings {
   cta_register: string
 }
 
-export interface ElevenLabsSettings {
-  secret: string
-}
-
 export interface ParsedSettings {
   branding: BrandingSettings
   landing: LandingSettings
-  elevenLabs: ElevenLabsSettings
 }
 
 export const DEFAULT_BRANDING: BrandingSettings = {
@@ -40,10 +35,6 @@ export const DEFAULT_LANDING: LandingSettings = {
   lead: "Rozpocznij swoją podróż do perfekcji komunikacji",
   cta_login: "Zaloguj się",
   cta_register: "Utwórz konto",
-}
-
-export const DEFAULT_ELEVEN_LABS: ElevenLabsSettings = {
-  secret: "",
 }
 
 export function parseSettings(rows: SettingsRow[] | null | undefined): ParsedSettings {
@@ -65,14 +56,8 @@ export function parseSettings(rows: SettingsRow[] | null | undefined): ParsedSet
     ...(map.get("landing") as Partial<LandingSettings> | undefined),
   }
 
-  const elevenLabs = {
-    ...DEFAULT_ELEVEN_LABS,
-    ...(map.get("elevenlabs") as Partial<ElevenLabsSettings> | undefined),
-  }
-
   return {
     branding,
     landing,
-    elevenLabs,
   }
 }

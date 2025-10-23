@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createHmac } from "crypto";
-import { getElevenLabsWebhookSecret } from "@/lib/server/elevenlabs-secret";
 
 // Types based on parley.md specification
 interface DynamicVariables {
@@ -71,11 +70,11 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text();
     const signature = request.headers.get("x-signature") || "";
 
-    // Get HMAC secret (settings table or fallback env)
-    const webhookSecret = await getElevenLabsWebhookSecret();
+    // Get HMAC secret from environment
+    const webhookSecret = process.env.ELEVENLABS_WEBHOOK_SECRET?.trim();
 
     if (!webhookSecret) {
-      console.error("[Webhook] ELEVENLABS secret not configured");
+      console.error("[Webhook] ELEVENLABS_WEBHOOK_SECRET not configured");
       return NextResponse.json(
         { error: "Webhook secret not configured" },
         { status: 500 }

@@ -106,11 +106,6 @@ Platforma do treningu rozmów (symulacje z agentami głosowymi ElevenLabs) obejm
 
 - Włącz/wyłącz globalnie; nazwa nadawcy; test e-mail.
 
-1. **ElevenLabs**
-
-- Wklejenie aktualnego secretu webhooka (panel admina → Settings → ElevenLabs).  
-- Secret jest przechowywany w tabeli `settings` i wykorzystywany przez endpoint `/api/webhooks/elevenlabs`; opcjonalny fallback to zmienna środowiskowa `ELEVENLABS_WEBHOOK_SECRET`.
-
 1. **Webhook**
 
 - HMAC secret (read-only), podgląd ostatnich zdarzeń (status 2xx/4xx/5xx, data), debug payload (ostatnie 5).
