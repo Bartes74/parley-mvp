@@ -46,7 +46,7 @@ export async function getElevenLabsWebhookSecret(): Promise<string | null> {
       .from("settings")
       .select("value")
       .eq("key", "elevenlabs")
-      .single()
+      .maybeSingle()
 
     if (error) {
       if (error.code !== "PGRST116") {
