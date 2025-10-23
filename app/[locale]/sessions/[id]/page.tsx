@@ -112,12 +112,12 @@ export default async function SessionDetailPage({
     .eq("session_id", id)
     .single();
 
-  const { data: webhookEvents } = await supabase
+  const { data: webhookEvents } = (await supabase
     .from("webhook_events")
-    .select<StoredWebhookEvent>("payload, created_at")
+    .select("payload, created_at")
     .eq("provider", "elevenlabs")
     .order("created_at", { ascending: false })
-    .limit(10);
+    .limit(10)) as { data: StoredWebhookEvent[] | null };
 
   // Fetch notes
   const { data: notes } = await supabase
