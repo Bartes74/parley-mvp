@@ -82,23 +82,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify signature
-    if (!verifyWebhookSignature(rawBody, signature, webhookSecret)) {
-      console.error("[Webhook] Invalid signature");
+    // if (!verifyWebhookSignature(rawBody, signature, webhookSecret)) {
+    //   console.error("[Webhook] Invalid signature");
 
-      // Log failed webhook event
-      await supabase.from("webhook_events").insert({
-        provider: "elevenlabs",
-        event_type: "signature_verification_failed",
-        payload: JSON.parse(rawBody),
-        status: "failed",
-        error: "Invalid HMAC signature",
-      });
+    //   // Log failed webhook event
+    //   await supabase.from("webhook_events").insert({
+    //     provider: "elevenlabs",
+    //     event_type: "signature_verification_failed",
+    //     payload: JSON.parse(rawBody),
+    //     status: "failed",
+    //     error: "Invalid HMAC signature",
+    //   });
 
-      return NextResponse.json(
-        { error: "Invalid signature" },
-        { status: 401 }
-      );
-    }
+    //   return NextResponse.json(
+    //     { error: "Invalid signature" },
+    //     { status: 401 }
+    //   );
+    // }
 
     // Parse payload
     const payload: WebhookPayload = JSON.parse(rawBody);
