@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { SessionHeader } from "@/components/session-detail/session-header";
 import { SessionFeedback } from "@/components/session-detail/session-feedback";
-import { SessionTranscript } from "@/components/session-detail/session-transcript";
+import { SessionTranscript, type TranscriptMessage } from "@/components/session-detail/session-transcript";
 import { SessionNotes } from "@/components/session-detail/session-notes";
 
 type ElevenLabsAnalysis = {
