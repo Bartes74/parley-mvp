@@ -152,6 +152,8 @@
         "language": "Język",
         "tags": "Tagi (rozdziel przecinkami)",
         "elevenAgentId": "ElevenLabs Agent ID",
+        "elevenWebhookSecret": "Secret webhooka",
+        "elevenWebhookSecretHelp": "Opcjonalny secret używany do weryfikacji odpowiedzi ElevenLabs. Pozostaw puste, aby korzystać z sekretu globalnego.",
         "thumbnail": "Miniatura",
         "isActive": "Aktywny",
         "displayOrder": "Kolejność wyświetlania",

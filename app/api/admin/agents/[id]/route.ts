@@ -80,6 +80,7 @@ export async function PATCH(
     tags,
     thumbnailPath,
     elevenAgentId,
+    elevenWebhookSecret,
     isActive,
     displayOrder,
   } = body;
@@ -96,6 +97,7 @@ export async function PATCH(
       tags,
       thumbnail_path: thumbnailPath || null,
       eleven_agent_id: elevenAgentId,
+      eleven_webhook_secret: elevenWebhookSecret || null,
       is_active: isActive,
       display_order: displayOrder,
       updated_at: new Date().toISOString(),

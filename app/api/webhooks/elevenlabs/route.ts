@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createHmac } from "crypto";
 
 // Types based on parley.md specification
 type ElevenLabsDynamicVariables = {
@@ -38,6 +39,18 @@ type ElevenLabsWebhookPayload = {
   data?: ElevenLabsPayloadData | null;
 };
 
+function verifySignature(payload: string, signature: string, secret: string) {
+  try {
+    const hmac = createHmac("sha256", secret);
+    hmac.update(payload);
+    const expected = hmac.digest("hex");
+    return expected === signature;
+  } catch (error) {
+    console.error("[Webhook] Failed to verify signature:", error);
+    return false;
+  }
+}
+
 /**
  * POST /api/webhooks/elevenlabs
  *
@@ -61,6 +74,44 @@ export async function POST(request: NextRequest) {
     const dynamicVariables =
       payloadData.conversation_initiation_client_data?.dynamic_variables || {};
     const session_id = dynamicVariables.session_id || null;
+    const agentIdFromPayload = dynamicVariables.agent_db_id || null;
+
+    let signingSecret = process.env.ELEVENLABS_WEBHOOK_SECRET?.trim() || null;
+
+    if (agentIdFromPayload) {
+      const { data: agentSecret } = await supabase
+        .from("agents")
+        .select("eleven_webhook_secret")
+        .eq("id", agentIdFromPayload)
+        .maybeSingle();
+
+      if (agentSecret?.eleven_webhook_secret) {
+        signingSecret = agentSecret.eleven_webhook_secret.trim();
+      }
+    }
+
+    const signature = request.headers.get("x-signature") || "";
+
+    if (signingSecret && signature) {
+      const isValid = verifySignature(rawBody, signature, signingSecret);
+
+      if (!isValid) {
+        console.error("[Webhook] Invalid signature for agent", agentIdFromPayload ?? "unknown");
+
+        await supabase.from("webhook_events").insert({
+          provider: "elevenlabs",
+          event_type: payload.type || "unknown",
+          payload,
+          status: "failed",
+          error: "Invalid HMAC signature",
+        });
+
+        return NextResponse.json(
+          { error: "Invalid signature" },
+          { status: 401 }
+        );
+      }
+    }
 
     if (!session_id) {
       console.warn("[Webhook] Missing session_id in dynamic variables - ignoring event");

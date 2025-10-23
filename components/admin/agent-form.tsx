@@ -27,6 +27,7 @@ interface AgentFormProps {
     language: string;
     tags: string[];
     elevenAgentId: string;
+    elevenWebhookSecret: string;
     isActive: boolean;
     displayOrder: number;
     thumbnailPath: string;
@@ -47,6 +48,7 @@ export function AgentForm({ agent }: AgentFormProps) {
     language: agent?.language || "pl",
     tags: agent?.tags?.join(", ") || "",
     elevenAgentId: agent?.elevenAgentId || "",
+    elevenWebhookSecret: agent?.elevenWebhookSecret || "",
     isActive: agent?.isActive ?? true,
     displayOrder: agent?.displayOrder || 0,
     thumbnailPath: agent?.thumbnailPath || "",
@@ -111,6 +113,7 @@ export function AgentForm({ agent }: AgentFormProps) {
           language: formData.language,
           tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
           elevenAgentId: formData.elevenAgentId,
+          elevenWebhookSecret: formData.elevenWebhookSecret,
           isActive: formData.isActive,
           displayOrder: formData.displayOrder,
           thumbnailPath,
@@ -184,6 +187,21 @@ export function AgentForm({ agent }: AgentFormProps) {
             />
             <p className="text-sm text-muted-foreground">
               {t("instructionsHelp")}
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="elevenWebhookSecret">{t("elevenWebhookSecret")}</Label>
+            <Input
+              id="elevenWebhookSecret"
+              value={formData.elevenWebhookSecret}
+              onChange={(e) =>
+                setFormData({ ...formData, elevenWebhookSecret: e.target.value })
+              }
+              placeholder="wsec_..."
+            />
+            <p className="text-sm text-muted-foreground">
+              {t("elevenWebhookSecretHelp")}
             </p>
           </div>
 

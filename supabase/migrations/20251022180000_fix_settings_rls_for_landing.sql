@@ -3,6 +3,9 @@
 
 DROP POLICY IF EXISTS "Only admins can view settings" ON settings;
 
+-- Ensure we don't error if the policy already exists
+DROP POLICY IF EXISTS "Anyone can view settings" ON settings;
+
 -- New policy: Anyone can read settings (for landing page)
 CREATE POLICY "Anyone can view settings"
   ON settings FOR SELECT

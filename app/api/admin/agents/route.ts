@@ -71,6 +71,7 @@ export async function POST(request: Request) {
     tags,
     thumbnailPath,
     elevenAgentId,
+    elevenWebhookSecret,
     isActive,
     displayOrder,
   } = body;
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
       tags: tags || [],
       thumbnail_path: thumbnailPath || null,
       eleven_agent_id: elevenAgentId,
+      eleven_webhook_secret: elevenWebhookSecret || null,
       is_active: isActive ?? true,
       display_order: displayOrder ?? 0,
     })

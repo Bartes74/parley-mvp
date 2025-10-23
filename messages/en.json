@@ -152,6 +152,8 @@
         "language": "Language",
         "tags": "Tags (comma separated)",
         "elevenAgentId": "ElevenLabs Agent ID",
+        "elevenWebhookSecret": "Webhook secret",
+        "elevenWebhookSecretHelp": "Optional secret used to verify callbacks from ElevenLabs. Leave empty to use the global secret.",
         "thumbnail": "Thumbnail",
         "isActive": "Active",
         "displayOrder": "Display order",

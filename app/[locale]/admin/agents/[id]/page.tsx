@@ -61,6 +61,7 @@ export default async function EditAgentPage({
           tags: agent.tags || [],
           thumbnailPath: agent.thumbnail_path || "",
           elevenAgentId: agent.eleven_agent_id,
+          elevenWebhookSecret: agent.eleven_webhook_secret || "",
           isActive: agent.is_active,
           displayOrder: agent.display_order || 0,
         }}
