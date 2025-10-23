@@ -178,7 +178,7 @@ export default async function SessionDetailPage({
           message: entry.message || entry.original_message || "",
           timestamp: typeof entry.timestamp === "string" ? entry.timestamp : undefined,
         }))
-        .filter((entry): entry is TranscriptMessage => Boolean(entry.message))
+        .filter((entry) => Boolean(entry.message))
     : null;
 
   const combinedFeedback = analysisFromDb ?? analysisFromWebhook;
