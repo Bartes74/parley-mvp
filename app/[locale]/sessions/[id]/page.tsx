@@ -161,20 +161,18 @@ export default async function SessionDetailPage({
       }
     : null;
 
-  const transcriptFromDb = (transcript?.transcript ?? null) as
-    | {
-        role: "user" | "agent";
-        message: string;
-        timestamp?: string;
-      }[]
-    | null;
-
-  const transcriptArray = Array.isArray(fallbackPayload?.transcript)
-    ? fallbackPayload?.transcript ?? []
+  const transcriptFromDb: TranscriptMessage[] | null = Array.isArray(transcript?.transcript)
+    ? (transcript!.transcript as { role: "user" | "agent"; message: string; timestamp?: string | null }[])
+        .map((entry) => ({
+          role: entry.role,
+          message: entry.message,
+          timestamp: entry.timestamp ?? undefined,
+        }))
+        .filter((entry) => entry.message)
     : null;
 
-  const transcriptFromWebhook = Array.isArray(transcriptArray)
-    ? transcriptArray
+  const transcriptFromWebhook: TranscriptMessage[] | null = Array.isArray(fallbackPayload?.transcript)
+    ? (fallbackPayload!.transcript as ElevenLabsTranscriptEntry[])
         .map((entry) => ({
           role: entry.role === "user" ? "user" : "agent",
           message: entry.message || entry.original_message || "",
@@ -184,7 +182,8 @@ export default async function SessionDetailPage({
     : null;
 
   const combinedFeedback = analysisFromDb ?? analysisFromWebhook;
-  const combinedTranscript = transcriptFromDb ?? transcriptFromWebhook;
+  const combinedTranscript: TranscriptMessage[] | null =
+    transcriptFromDb ?? transcriptFromWebhook ?? null;
 
   return (
     <div className="container mx-auto px-4 py-8">
