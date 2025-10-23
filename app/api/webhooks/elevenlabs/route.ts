@@ -110,20 +110,22 @@ export async function POST(request: NextRequest) {
       payload.conversation_initiation_client_data?.dynamic_variables || {};
 
     if (!session_id) {
-      console.error("[Webhook] Missing session_id in dynamic variables");
+      console.warn("[Webhook] Missing session_id in dynamic variables - ignoring event");
 
-      // Log webhook event
       await supabase.from("webhook_events").insert({
         provider: "elevenlabs",
         event_type: payload.event,
         payload: payload,
-        status: "failed",
+        status: "ignored",
         error: "Missing session_id in dynamic variables",
       });
 
       return NextResponse.json(
-        { error: "Missing session_id" },
-        { status: 400 }
+        {
+          success: false,
+          message: "Missing session_id in dynamic variables",
+        },
+        { status: 200 }
       );
     }
 

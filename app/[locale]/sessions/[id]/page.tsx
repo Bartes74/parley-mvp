@@ -29,6 +29,14 @@ export default async function SessionDetailPage({
     redirect("/login");
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const isAdmin = profile?.role === "admin";
+
   // Fetch session with all related data
   const { data: session, error: sessionError } = await supabase
     .from("sessions")
@@ -57,8 +65,9 @@ export default async function SessionDetailPage({
     notFound();
   }
 
-  // Verify user owns this session
-  if (session.user_id !== user.id) {
+  const isOwner = session.user_id === user.id;
+
+  if (!isOwner && !isAdmin) {
     notFound();
   }
 
@@ -88,6 +97,8 @@ export default async function SessionDetailPage({
     ? session.agents[0]
     : session.agents;
 
+  const backHref = isOwner ? "/sessions" : "/admin/sessions";
+
   return (
     <div className="container mx-auto px-4 py-8">
       <SessionHeader
@@ -103,6 +114,8 @@ export default async function SessionDetailPage({
             language: agent?.language || "",
           },
         }}
+        canManage={isOwner}
+        backHref={backHref}
       />
 
       <div className="mt-8 space-y-8">
@@ -135,7 +148,11 @@ export default async function SessionDetailPage({
         )}
 
         {/* Notes Section */}
-        <SessionNotes sessionId={session.id} initialNotes={notes?.notes_md || ""} />
+        <SessionNotes
+          sessionId={session.id}
+          initialNotes={notes?.notes_md || ""}
+          readOnly={!isOwner}
+        />
       </div>
     </div>
   );
