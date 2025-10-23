@@ -35,9 +35,11 @@ interface SessionHeaderProps {
       language: string;
     };
   };
+  canManage?: boolean;
+  backHref?: string;
 }
 
-export function SessionHeader({ session }: SessionHeaderProps) {
+export function SessionHeader({ session, canManage = true, backHref }: SessionHeaderProps) {
   const t = useTranslations("session");
   const tCommon = useTranslations("common");
   const tSessions = useTranslations("sessions");
@@ -55,6 +57,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
   });
 
   const handleSaveTitle = async () => {
+    if (!canManage) return;
     try {
       const response = await fetch(`/api/sessions/${session.id}`, {
         method: "PATCH",
@@ -73,6 +76,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
   };
 
   const handleDelete = async () => {
+    if (!canManage) return;
     setIsDeleting(true);
     try {
       const response = await fetch(`/api/sessions/${session.id}`, {
@@ -82,7 +86,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
       if (!response.ok) throw new Error("Failed to delete");
 
       toast.success(tSessions("deleteSuccess"));
-      router.push("/sessions");
+      router.push(backHref ?? "/sessions");
     } catch {
       toast.error(tSessions("deleteError"));
       setIsDeleting(false);
@@ -118,7 +122,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
     <>
       <div className="space-y-4">
         {/* Back button */}
-        <Button variant="ghost" size="sm" onClick={() => router.push("/sessions")}>
+        <Button variant="ghost" size="sm" onClick={() => router.push(backHref ?? "/sessions")}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           {t("backToList")}
         </Button>
@@ -126,7 +130,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            {isEditing ? (
+            {isEditing && canManage ? (
               <div className="flex items-center gap-2">
                 <Input
                   value={title}
@@ -151,13 +155,15 @@ export function SessionHeader({ session }: SessionHeaderProps) {
             ) : (
               <div className="flex items-center gap-3">
                 <h1 className="text-3xl font-bold">{title}</h1>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Edit2 className="h-4 w-4" />
-                </Button>
+                {canManage ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                ) : null}
               </div>
             )}
 
@@ -170,14 +176,16 @@ export function SessionHeader({ session }: SessionHeaderProps) {
             </div>
           </div>
 
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => setDeleteDialogOpen(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            {t("delete")}
-          </Button>
+          {canManage ? (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => setDeleteDialogOpen(true)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              {t("delete")}
+            </Button>
+          ) : null}
         </div>
       </div>
 

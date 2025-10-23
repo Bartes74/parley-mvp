@@ -15,9 +15,10 @@ import { toast } from "sonner";
 interface SessionNotesProps {
   sessionId: string;
   initialNotes: string;
+  readOnly?: boolean;
 }
 
-export function SessionNotes({ sessionId, initialNotes }: SessionNotesProps) {
+export function SessionNotes({ sessionId, initialNotes, readOnly = false }: SessionNotesProps) {
   const t = useTranslations("session");
   const [notes, setNotes] = useState(initialNotes);
   const [isSaving, setIsSaving] = useState(false);
@@ -25,6 +26,7 @@ export function SessionNotes({ sessionId, initialNotes }: SessionNotesProps) {
   // Auto-save with debounce
   const saveNotes = useCallback(
     async (notesToSave: string) => {
+      if (readOnly) return;
       setIsSaving(true);
       try {
         const response = await fetch(`/api/sessions/${sessionId}/notes`, {
@@ -42,19 +44,21 @@ export function SessionNotes({ sessionId, initialNotes }: SessionNotesProps) {
         setIsSaving(false);
       }
     },
-    [sessionId, t]
+    [sessionId, t, readOnly]
   );
 
   // Debounce auto-save
   useEffect(() => {
     if (notes === initialNotes) return; // Don't save if unchanged
 
+    if (readOnly) return;
+
     const timeoutId = setTimeout(() => {
       saveNotes(notes);
     }, 2000); // Save after 2 seconds of inactivity
 
     return () => clearTimeout(timeoutId);
-  }, [notes, initialNotes, saveNotes]);
+  }, [notes, initialNotes, saveNotes, readOnly]);
 
   return (
     <Card>
@@ -75,6 +79,7 @@ export function SessionNotes({ sessionId, initialNotes }: SessionNotesProps) {
           onChange={(e) => setNotes(e.target.value)}
           placeholder={t("notesPlaceholder")}
           className="min-h-[200px] font-mono text-sm"
+          readOnly={readOnly}
         />
       </CardContent>
     </Card>

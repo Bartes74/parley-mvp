@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createHmac } from "crypto";
 
 // Types based on parley.md specification
 interface DynamicVariables {
@@ -34,24 +33,6 @@ interface WebhookPayload {
 /**
  * Verify HMAC signature from ElevenLabs webhook
  */
-function verifyWebhookSignature(
-  payload: string,
-  signature: string,
-  secret: string
-): boolean {
-  try {
-    const hmac = createHmac("sha256", secret);
-    hmac.update(payload);
-    const expectedSignature = hmac.digest("hex");
-
-    // Constant-time comparison to prevent timing attacks
-    return signature === expectedSignature;
-  } catch (error) {
-    console.error("[Webhook] Signature verification error:", error);
-    return false;
-  }
-}
-
 /**
  * POST /api/webhooks/elevenlabs
  *
@@ -66,41 +47,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
 
   try {
-    // Get raw body for signature verification
     const rawBody = await request.text();
-    const signature = request.headers.get("x-signature") || "";
-
-    // Get HMAC secret from environment
-    const webhookSecret = process.env.ELEVENLABS_WEBHOOK_SECRET?.trim();
-
-    if (!webhookSecret) {
-      console.error("[Webhook] ELEVENLABS_WEBHOOK_SECRET not configured");
-      return NextResponse.json(
-        { error: "Webhook secret not configured" },
-        { status: 500 }
-      );
-    }
-
-    // Verify signature
-    // if (!verifyWebhookSignature(rawBody, signature, webhookSecret)) {
-    //   console.error("[Webhook] Invalid signature");
-
-    //   // Log failed webhook event
-    //   await supabase.from("webhook_events").insert({
-    //     provider: "elevenlabs",
-    //     event_type: "signature_verification_failed",
-    //     payload: JSON.parse(rawBody),
-    //     status: "failed",
-    //     error: "Invalid HMAC signature",
-    //   });
-
-    //   return NextResponse.json(
-    //     { error: "Invalid signature" },
-    //     { status: 401 }
-    //   );
-    // }
-
-    // Parse payload
     const payload: WebhookPayload = JSON.parse(rawBody);
 
     console.log("[Webhook] Received event:", payload.event);
