@@ -12,6 +12,11 @@ type ElevenLabsAnalysis = {
   transcript_summary?: string | null;
   call_summary_title?: string | null;
   tips?: string[] | null;
+  evaluation_criteria_results?: Record<string, {
+    result?: string | null;
+    rationale?: string | null;
+    criteria_id?: string | null;
+  }> | null;
 };
 
 type ElevenLabsTranscriptEntry = {
@@ -160,6 +165,7 @@ export default async function SessionDetailPage({
         scoreBreakdown: payloadData.analysis.criteria ?? null,
         rawFeedback: {
           summary:
+            Object.values(payloadData.analysis.evaluation_criteria_results ?? {}).find((entry) => entry?.rationale)?.rationale ||
             payloadData.analysis.transcript_summary ||
             payloadData.analysis.call_summary_title ||
             undefined,
@@ -193,15 +199,36 @@ export default async function SessionDetailPage({
   const combinedTranscript: TranscriptMessage[] | null =
     transcriptFromDb ?? transcriptFromWebhook ?? null;
 
+  let resolvedStatus = session.status;
+  let resolvedEndedAt = session.ended_at;
+  if (resolvedStatus === "pending" && combinedFeedback) {
+    const endedAtValue = session.ended_at ?? new Date().toISOString();
+    try {
+      await supabase
+        .from("sessions")
+        .update({
+          status: "completed",
+          ended_at: endedAtValue,
+        })
+        .eq("id", id);
+      resolvedStatus = "completed";
+      resolvedEndedAt = endedAtValue;
+    } catch (error) {
+      console.error("[SessionDetail] Failed to update session status:", error);
+    }
+  }
+
+  const showPendingNotice = resolvedStatus === "pending" && !combinedFeedback;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <SessionHeader
         session={{
           id: session.id,
           title: session.title_override || agent?.title || t("untitled"),
-          status: session.status,
+          status: resolvedStatus,
           startedAt: session.started_at,
-          endedAt: session.ended_at,
+          endedAt: resolvedEndedAt,
           agent: {
             title: agent?.title || "",
             difficulty: agent?.difficulty || "",
@@ -214,7 +241,7 @@ export default async function SessionDetailPage({
 
       <div className="mt-8 space-y-8">
         {/* Show pending message if no feedback yet */}
-        {session.status === "pending" && (
+        {showPendingNotice && (
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-6 dark:border-amber-900/30 dark:bg-amber-900/10">
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 animate-pulse rounded-full bg-amber-500"></div>
