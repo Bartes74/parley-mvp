@@ -172,13 +172,13 @@ export default async function SessionDetailPage({
     : null;
 
   const transcriptFromWebhook: TranscriptMessage[] | null = Array.isArray(fallbackPayload?.transcript)
-    ? (fallbackPayload!.transcript as ElevenLabsTranscriptEntry[])
+    ? (fallbackPayload!.transcript ?? [])
         .map((entry) => ({
           role: entry.role === "user" ? "user" : "agent",
           message: entry.message || entry.original_message || "",
           timestamp: typeof entry.timestamp === "string" ? entry.timestamp : undefined,
         }))
-        .filter((entry) => entry.message)
+        .filter((entry): entry is TranscriptMessage => Boolean(entry.message))
     : null;
 
   const combinedFeedback = analysisFromDb ?? analysisFromWebhook;
