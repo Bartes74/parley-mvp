@@ -174,7 +174,7 @@ export default async function SessionDetailPage({
   const transcriptFromWebhook: TranscriptMessage[] | null = Array.isArray(fallbackPayload?.transcript)
     ? (fallbackPayload!.transcript ?? [])
         .map((entry) => ({
-          role: entry.role === "user" ? "user" : "agent",
+          role: (entry.role === "user" ? "user" : "agent") as "user" | "agent",
           message: entry.message || entry.original_message || "",
           timestamp: typeof entry.timestamp === "string" ? entry.timestamp : undefined,
         }))
