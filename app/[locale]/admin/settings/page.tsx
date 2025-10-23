@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { BrandingSettings } from "@/components/admin/branding-settings";
 import { LandingSettings } from "@/components/admin/landing-settings";
 import { EmailSettings } from "@/components/admin/email-settings";
+import { ElevenLabsSettings } from "@/components/admin/elevenlabs-settings";
 
 export default async function AdminSettingsPage() {
   const t = await getTranslations("admin.settings");
@@ -58,19 +59,22 @@ export default async function AdminSettingsPage() {
     sender_name: "Parley",
   };
 
+  const elevenLabsSettings = (settingsObject.elevenlabs as { secret?: string } | undefined) || {
+    secret: "",
+  };
+
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">{t("title")}</h2>
-        <p className="text-muted-foreground mt-2">
-          Zarządzaj ustawieniami systemu: branding, landing page i powiadomienia e-mail
-        </p>
+        <p className="text-muted-foreground mt-2">{t("description")}</p>
       </div>
 
       <div className="space-y-6">
         <BrandingSettings initialSettings={brandingSettings} />
         <LandingSettings initialSettings={landingSettings} />
         <EmailSettings initialSettings={emailSettings} />
+        <ElevenLabsSettings initialSettings={elevenLabsSettings} />
       </div>
     </div>
   );

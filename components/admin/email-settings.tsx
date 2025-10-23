@@ -28,6 +28,7 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSendingTest, setIsSendingTest] = useState(false);
   const [settings, setSettings] = useState(initialSettings);
+  const [testEmail, setTestEmail] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,13 +58,33 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
   };
 
   const handleSendTestEmail = async () => {
+    if (!settings.enabled) {
+      toast.info(t("testEmailDisabled"));
+      return;
+    }
+
+    if (!testEmail.trim()) {
+      toast.error(t("testEmailRequired"));
+      return;
+    }
+
     setIsSendingTest(true);
     try {
-      // TODO: Implement test email endpoint
-      toast.info("Funkcja wysyłania testowego e-maila będzie dostępna wkrótce");
+      const response = await fetch("/api/admin/email/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: testEmail.trim() }),
+      });
+
+      if (!response.ok) {
+        console.error("Test email error:", await response.json().catch(() => ({})));
+        throw new Error("Failed to send test email");
+      }
+
+      toast.success(t("testEmailSuccess"));
     } catch (error) {
       console.error("Error sending test email:", error);
-      toast.error("Nie udało się wysłać testowego e-maila");
+      toast.error(t("testEmailError"));
     } finally {
       setIsSendingTest(false);
     }
@@ -113,6 +134,18 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
             </p>
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="test_email">{t("testEmailLabel")}</Label>
+            <Input
+              id="test_email"
+              type="email"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+              placeholder={t("testEmailPlaceholder")}
+            />
+            <p className="text-sm text-muted-foreground">{t("testEmailHelp")}</p>
+          </div>
+
           <div className="flex gap-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? t("saving") : tCommon("save")}
@@ -121,7 +154,7 @@ export function EmailSettings({ initialSettings }: EmailSettingsProps) {
               type="button"
               variant="outline"
               onClick={handleSendTestEmail}
-              disabled={isSendingTest || !settings.enabled}
+              disabled={isSendingTest || !settings.enabled || !testEmail.trim()}
             >
               {isSendingTest ? t("testEmailSending") : t("testEmail")}
             </Button>

@@ -102,6 +102,9 @@ Kluczowe pliki z ostatnich zmian:
 | `NEXT_PUBLIC_SUPABASE_URL` | URL projektu Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | publiczne anon key (używane w SSR i kliencie) |
 | `ELEVENLABS_WEBHOOK_SECRET` | Shared secret do weryfikacji podpisu webhooka ElevenLabs |
+| `SUPABASE_SERVICE_ROLE_KEY` | (opcjonalnie) serwisowy klucz Supabase używany tylko na serwerze do odczytu sekretu ElevenLabs |
+| `RESEND_API_KEY` | Klucz API Resend używany do wysyłki e-maili |
+| `RESEND_FROM_EMAIL` | Adres nadawcy (musi być zweryfikowany w Resend) |
 
 > Jeśli dodasz integrację e-mail (np. Resend), dodaj odpowiednie zmienne – na razie endpoint wysyłanie testowego maila jest oznaczony jako TODO.
 
@@ -183,8 +186,11 @@ Kluczowe pliki z ostatnich zmian:
 
 4. **Landing page** (`app/[locale]/page.tsx`):  
    - Używa ustawień `landing` (headline, subclaim, lead, CTA).  
-  - Nagłówek ma kolor `primary`, teksty otrzymały większy rozstrzał linii (`leading-relaxed`) i spacing.  
-  - CTA (przycisk) dziedziczy nowe zmienne CSS. Formularz logowania znajduje się po prawej stronie (1/3 szerokości) w siatce `lg:grid-cols-3`.
+   - Nagłówek ma kolor `primary`, teksty otrzymały większy rozstrzał linii (`leading-relaxed`) i spacing.  
+   - CTA (przycisk) dziedziczy nowe zmienne CSS. Formularz logowania znajduje się po prawej stronie (1/3 szerokości) w siatce `lg:grid-cols-3`.
+5. **ElevenLabs secret** (`Settings > ElevenLabs`):  
+   - Administrator może wklejać aktualny sekret webhooka bez redeployu.  
+   - Endpoint `app/api/webhooks/elevenlabs/route.ts` pobiera go z bazy za pomocą klucza serwisowego Supabase; jeśli brak wpisu, korzysta z `ELEVENLABS_WEBHOOK_SECRET`.
 
 > Zmiana ustawień w panelu admina od razu wpływa na layout – wystarczy odświeżyć stronę (logika renderowana server-side).
 

@@ -201,6 +201,7 @@
     },
     "settings": {
       "title": "Settings",
+      "description": "Manage branding, landing page, email notifications and ElevenLabs integration",
       "retention": {
         "title": "Data Retention",
         "description": "Set how long to keep data (0 = indefinitely)",
@@ -252,19 +253,42 @@
         "testEmail": "Send test email",
         "enabledHelp": "Enable or disable email notifications for users",
         "senderNameHelp": "Name that will appear as the email sender",
+        "testEmailLabel": "Test email address",
+        "testEmailPlaceholder": "name@example.com",
+        "testEmailHelp": "We will send a one-off confirmation message to this address.",
+        "testEmailSuccess": "Test email sent",
+        "testEmailError": "Failed to send test email",
+        "testEmailDisabled": "Enable email notifications before sending a test email",
+        "testEmailRequired": "Provide a valid email address to send the test message",
         "testEmailSending": "Sending...",
         "enabledTrue": "Enabled",
         "enabledFalse": "Disabled",
         "saving": "Saving...",
         "saved": "Email settings saved"
+      },
+      "elevenlabs": {
+        "title": "ElevenLabs Integration",
+        "description": "Paste the webhook secret generated in ElevenLabs. The secret is stored securely in the database and used to verify incoming conversations.",
+        "secretLabel": "Webhook secret",
+        "secretPlaceholder": "wsec_...",
+        "secretHelp": "Paste the value from the ElevenLabs webhook settings.",
+        "secretHelpExisting": "Secret already configured. Replace it only if you generated a new one in ElevenLabs.",
+        "save": "Save secret",
+        "saving": "Saving...",
+        "saved": "ElevenLabs secret saved",
+        "saveError": "Failed to save ElevenLabs secret"
       }
     },
     "webhooks": {
       "title": "Webhook Monitor",
       "provider": "Provider",
+      "event": "Event",
       "status": "Status",
       "created": "Created",
-      "payload": "Payload",
+      "details": "Details",
+      "detailsSummary": "Show payload",
+      "detailsSummaryError": "Show error and payload",
+      "dynamicVars": "Session",
       "lastEvents": "Recent events"
     }
   },

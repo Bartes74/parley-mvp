@@ -13,6 +13,16 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
+type WebhookEvent = {
+  id: string;
+  provider: string | null;
+  event_type: string | null;
+  status: string | null;
+  payload: unknown;
+  error: string | null;
+  created_at: string;
+};
+
 export default async function AdminWebhooksPage({
   params,
 }: {
@@ -48,6 +58,7 @@ export default async function AdminWebhooksPage({
     .limit(20);
 
   const dateLocale = locale === "pl" ? pl : enUS;
+  const webhookEvents = (events ?? []) as WebhookEvent[];
 
   return (
     <div className="space-y-6">
@@ -57,15 +68,28 @@ export default async function AdminWebhooksPage({
         <TableHeader>
           <TableRow>
             <TableHead>{t("provider")}</TableHead>
+            <TableHead>{t("event")}</TableHead>
             <TableHead>{t("status")}</TableHead>
             <TableHead>{t("created")}</TableHead>
+            <TableHead>{t("details")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {events && events.length > 0 ? (
-            events.map((event) => (
+          {webhookEvents.length > 0 ? (
+            webhookEvents.map((event) => {
+              const formattedCreatedAt = formatDistanceToNow(new Date(event.created_at), {
+                addSuffix: true,
+                locale: dateLocale,
+              });
+              const payloadString = safeStringify(event.payload);
+              const payloadObject = (event.payload ?? {}) as Record<string, unknown>;
+              const errorMessage = event.error || (payloadObject?.error as string | undefined);
+              const dynamicVariables = extractDynamicVariables(payloadObject);
+
+              return (
               <TableRow key={event.id}>
-                <TableCell className="font-medium">{event.provider}</TableCell>
+                <TableCell className="font-medium">{event.provider ?? "—"}</TableCell>
+                <TableCell className="text-sm">{event.event_type ?? "—"}</TableCell>
                 <TableCell>
                   <Badge
                     variant={
@@ -76,20 +100,41 @@ export default async function AdminWebhooksPage({
                           : "secondary"
                     }
                   >
-                    {event.status}
+                    {event.status ?? "unknown"}
                   </Badge>
                 </TableCell>
-                <TableCell>
-                  {formatDistanceToNow(new Date(event.created_at), {
-                    addSuffix: true,
-                    locale: dateLocale,
-                  })}
+                <TableCell className="text-sm">{formattedCreatedAt}</TableCell>
+                <TableCell className="max-w-[280px] whitespace-normal text-sm">
+                  <details>
+                    <summary className="cursor-pointer text-sm text-muted-foreground">
+                      {errorMessage ? t("detailsSummaryError") : t("detailsSummary")}
+                    </summary>
+                    <div className="mt-3 space-y-2">
+                      {errorMessage ? (
+                        <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                          {errorMessage}
+                        </div>
+                      ) : null}
+                      {dynamicVariables ? (
+                        <div className="rounded-md border bg-muted/30 px-3 py-2 text-xs">
+                          <span className="font-semibold">{t("dynamicVars")}:</span>{" "}
+                          <span className="font-mono">
+                            {dynamicVariables.session_id ?? "—"}
+                          </span>
+                        </div>
+                      ) : null}
+                      <pre className="max-h-64 overflow-auto rounded-md bg-muted/60 p-3 text-xs leading-relaxed">
+                        {payloadString}
+                      </pre>
+                    </div>
+                  </details>
                 </TableCell>
               </TableRow>
-            ))
+              );
+            })
           ) : (
             <TableRow>
-              <TableCell colSpan={3} className="text-center text-muted-foreground">
+              <TableCell colSpan={5} className="text-center text-muted-foreground">
                 Brak zdarzeń webhook
               </TableCell>
             </TableRow>
@@ -98,4 +143,24 @@ export default async function AdminWebhooksPage({
       </Table>
     </div>
   );
+}
+
+function safeStringify(payload: unknown): string {
+  try {
+    return JSON.stringify(payload ?? {}, null, 2);
+  } catch {
+    return "[Unable to display payload]";
+  }
+}
+
+function extractDynamicVariables(payload: Record<string, unknown>) {
+  const dynamicVars = payload?.conversation_initiation_client_data as
+    | { dynamic_variables?: Record<string, string> }
+    | undefined;
+
+  if (dynamicVars?.dynamic_variables) {
+    return dynamicVars.dynamic_variables;
+  }
+
+  return null;
 }

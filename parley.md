@@ -106,6 +106,11 @@ Platforma do treningu rozmów (symulacje z agentami głosowymi ElevenLabs) obejm
 
 - Włącz/wyłącz globalnie; nazwa nadawcy; test e-mail.
 
+1. **ElevenLabs**
+
+- Wklejenie aktualnego secretu webhooka (panel admina → Settings → ElevenLabs).  
+- Secret jest przechowywany w tabeli `settings` i wykorzystywany przez endpoint `/api/webhooks/elevenlabs`; opcjonalny fallback to zmienna środowiskowa `ELEVENLABS_WEBHOOK_SECRET`.
+
 1. **Webhook**
 
 - HMAC secret (read-only), podgląd ostatnich zdarzeń (status 2xx/4xx/5xx, data), debug payload (ostatnie 5).
@@ -277,9 +282,9 @@ Platforma do treningu rozmów (symulacje z agentami głosowymi ElevenLabs) obejm
 
 **E-maile (Resend)**
 
-- Nadawca tymczasowy (Resend Onboarding Domain).
-- Szablon: „Feedback gotowy” → przycisk „Zobacz rozmowę”.
-- Włącznik globalny w ustawieniach (Admin → Powiadomienia e-mail).
+- Wymagane zmienne: `RESEND_API_KEY`, `RESEND_FROM_EMAIL` (zweryfikowana domena w Resend).
+- Panel admina → Powiadomienia e-mail: przełącznik Enabled, nazwa nadawcy, pole na adres testowy + przycisk „Wyślij testowy e-mail” (wywołuje `/api/admin/email/test`).
+- Szablony: testowe (HTML inline) oraz docelowe „Feedback gotowy” z CTA „Zobacz rozmowę”.
 
 
 

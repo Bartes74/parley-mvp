@@ -201,6 +201,7 @@
     },
     "settings": {
       "title": "Ustawienia",
+      "description": "Zarządzaj brandingiem, landing page, powiadomieniami e-mail i integracją ElevenLabs",
       "retention": {
         "title": "Retencja Danych",
         "description": "Określ jak długo przechowywać dane (0 = bezterminowo)",
@@ -252,19 +253,42 @@
         "testEmail": "Wyślij testowy e-mail",
         "enabledHelp": "Włącz lub wyłącz powiadomienia e-mail dla użytkowników",
         "senderNameHelp": "Nazwa która będzie widoczna jako nadawca e-maili",
+        "testEmailLabel": "Adres e-mail do testu",
+        "testEmailPlaceholder": "jan.kowalski@example.com",
+        "testEmailHelp": "Na ten adres wyślemy jednorazową wiadomość potwierdzającą konfigurację.",
+        "testEmailSuccess": "Testowy e-mail został wysłany",
+        "testEmailError": "Nie udało się wysłać testowego e-maila",
+        "testEmailDisabled": "Aby wysłać testowy e-mail, najpierw włącz powiadomienia",
+        "testEmailRequired": "Podaj poprawny adres e-mail, aby wysłać wiadomość testową",
         "testEmailSending": "Wysyłanie...",
         "enabledTrue": "Włączone",
         "enabledFalse": "Wyłączone",
         "saving": "Zapisywanie...",
         "saved": "Ustawienia email zapisane"
+      },
+      "elevenlabs": {
+        "title": "Integracja ElevenLabs",
+        "description": "Wklej sekret webhooka wygenerowany w ElevenLabs. Przechowujemy go w bazie i wykorzystujemy do weryfikacji nadchodzących rozmów.",
+        "secretLabel": "Secret webhooka",
+        "secretPlaceholder": "wsec_...",
+        "secretHelp": "Wklej wartość z ustawień webhooka w ElevenLabs.",
+        "secretHelpExisting": "Secret jest już zapisany. Podmień go tylko, jeśli wygenerowałeś nowy w ElevenLabs.",
+        "save": "Zapisz secret",
+        "saving": "Zapisywanie...",
+        "saved": "Secret ElevenLabs zapisany",
+        "saveError": "Nie udało się zapisać secretu ElevenLabs"
       }
     },
     "webhooks": {
       "title": "Monitor Webhooków",
       "provider": "Provider",
+      "event": "Zdarzenie",
       "status": "Status",
       "created": "Data",
-      "payload": "Payload",
+      "details": "Szczegóły",
+      "detailsSummary": "Pokaż payload",
+      "detailsSummaryError": "Pokaż błąd i payload",
+      "dynamicVars": "Sesja",
       "lastEvents": "Ostatnie zdarzenia"
     }
   },
