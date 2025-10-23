@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-interface TranscriptMessage {
+export interface TranscriptMessage {
   role: "user" | "agent";
   message: string;
   timestamp?: string;
