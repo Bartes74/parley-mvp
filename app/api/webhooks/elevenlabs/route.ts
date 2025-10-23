@@ -31,17 +31,13 @@ interface WebhookPayload {
 }
 
 /**
- * Verify HMAC signature from ElevenLabs webhook
- */
-/**
  * POST /api/webhooks/elevenlabs
  *
  * Handles post-call webhook from ElevenLabs:
- * 1. Verifies HMAC signature
- * 2. Extracts session_id from dynamic variables
- * 3. Saves transcript and feedback to database
- * 4. Updates session status to 'completed'
- * 5. Logs webhook event for monitoring
+ * 1. Odczytuje dynamic variables (session_id itd.)
+ * 2. Zapisuje transkrypt oraz analizę, jeśli to możliwe
+ * 3. Aktualizuje status rozmowy
+ * 4. Loguje zdarzenie do tabeli webhook_events
  */
 export async function POST(request: NextRequest) {
   const supabase = await createClient();

@@ -114,6 +114,8 @@
     "criteria": "Kryteria oceny",
     "summary": "Podsumowanie",
     "tips": "Wskazówki",
+    "transcriptShow": "Pokaż transkrypcję",
+    "transcriptHide": "Ukryj transkrypcję",
     "transcriptTitle": "Transkrypcja rozmowy",
     "notesTitle": "Twoje notatki",
     "notesPlaceholder": "Dodaj swoje notatki do tej rozmowy...",

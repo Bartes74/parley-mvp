@@ -114,6 +114,8 @@
     "criteria": "Evaluation Criteria",
     "summary": "Summary",
     "tips": "Tips",
+    "transcriptShow": "Show transcript",
+    "transcriptHide": "Hide transcript",
     "transcriptTitle": "Conversation Transcript",
     "notesTitle": "Your Notes",
     "notesPlaceholder": "Add your notes about this conversation...",

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface TranscriptMessage {
   role: "user" | "agent";
@@ -21,6 +23,7 @@ interface SessionTranscriptProps {
 
 export function SessionTranscript({ transcript }: SessionTranscriptProps) {
   const t = useTranslations("session");
+  const [isVisible, setIsVisible] = useState(false);
 
   if (!transcript || transcript.length === 0) {
     return null;
@@ -30,9 +33,15 @@ export function SessionTranscript({ transcript }: SessionTranscriptProps) {
     <Card>
       <CardHeader>
         <CardTitle>{t("transcript")}</CardTitle>
-        <CardDescription>{t("transcriptTitle")}</CardDescription>
+        <div className="flex items-center justify-between gap-4">
+          <CardDescription>{t("transcriptTitle")}</CardDescription>
+          <Button variant="outline" size="sm" onClick={() => setIsVisible((prev) => !prev)}>
+            {isVisible ? t("transcriptHide") : t("transcriptShow")}
+          </Button>
+        </div>
       </CardHeader>
-      <CardContent>
+      {isVisible ? (
+        <CardContent>
         <div className="space-y-4">
           {transcript.map((msg, index) => {
             const isUser = msg.role === "user";
@@ -64,7 +73,8 @@ export function SessionTranscript({ transcript }: SessionTranscriptProps) {
             );
           })}
         </div>
-      </CardContent>
+        </CardContent>
+      ) : null}
     </Card>
   );
 }

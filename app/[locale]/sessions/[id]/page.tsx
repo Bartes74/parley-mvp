@@ -6,6 +6,34 @@ import { SessionFeedback } from "@/components/session-detail/session-feedback";
 import { SessionTranscript } from "@/components/session-detail/session-transcript";
 import { SessionNotes } from "@/components/session-detail/session-notes";
 
+type ElevenLabsAnalysis = {
+  score_overall?: number | null;
+  criteria?: Record<string, number> | null;
+  transcript_summary?: string | null;
+  call_summary_title?: string | null;
+  tips?: string[] | null;
+};
+
+type ElevenLabsTranscriptEntry = {
+  role?: string | null;
+  message?: string | null;
+  original_message?: string | null;
+  timestamp?: string | null;
+};
+
+type StoredWebhookEvent = {
+  payload: {
+    analysis?: ElevenLabsAnalysis | null;
+    transcript?: ElevenLabsTranscriptEntry[] | null;
+    conversation_initiation_client_data?: {
+      dynamic_variables?: {
+        session_id?: string | null;
+      } | null;
+    } | null;
+  } | null;
+  created_at: string;
+};
+
 interface SessionDetailPageProps {
   params: Promise<{
     id: string;
@@ -78,12 +106,18 @@ export default async function SessionDetailPage({
     .eq("session_id", id)
     .single();
 
-  // Fetch transcript
   const { data: transcript } = await supabase
     .from("session_transcripts")
     .select("*")
     .eq("session_id", id)
     .single();
+
+  const { data: webhookEvents } = await supabase
+    .from("webhook_events")
+    .select<StoredWebhookEvent>("payload, created_at")
+    .eq("provider", "elevenlabs")
+    .order("created_at", { ascending: false })
+    .limit(10);
 
   // Fetch notes
   const { data: notes } = await supabase
@@ -98,6 +132,59 @@ export default async function SessionDetailPage({
     : session.agents;
 
   const backHref = isOwner ? "/sessions" : "/admin/sessions";
+
+  const fallbackPayload = webhookEvents?.find((event) => {
+    const sessionIdFromPayload = event.payload?.conversation_initiation_client_data?.dynamic_variables?.session_id;
+    return sessionIdFromPayload === id && event.payload?.analysis;
+  })?.payload;
+
+  const analysisFromDb = feedback
+    ? {
+        scoreOverall: feedback.score_overall,
+        scoreBreakdown: feedback.score_breakdown,
+        rawFeedback: feedback.raw_feedback,
+      }
+    : null;
+
+  const analysisFromWebhook = fallbackPayload?.analysis
+    ? {
+        scoreOverall: fallbackPayload.analysis.score_overall ?? null,
+        scoreBreakdown: fallbackPayload.analysis.criteria ?? null,
+        rawFeedback: {
+          summary:
+            fallbackPayload.analysis.transcript_summary ||
+            fallbackPayload.analysis.call_summary_title ||
+            undefined,
+          tips: fallbackPayload.analysis.tips ?? [],
+          criteria: fallbackPayload.analysis.criteria ?? undefined,
+        },
+      }
+    : null;
+
+  const transcriptFromDb = (transcript?.transcript ?? null) as
+    | {
+        role: "user" | "agent";
+        message: string;
+        timestamp?: string;
+      }[]
+    | null;
+
+  const transcriptArray = Array.isArray(fallbackPayload?.transcript)
+    ? fallbackPayload?.transcript ?? []
+    : null;
+
+  const transcriptFromWebhook = Array.isArray(transcriptArray)
+    ? transcriptArray
+        .map((entry) => ({
+          role: entry.role === "user" ? "user" : "agent",
+          message: entry.message || entry.original_message || "",
+          timestamp: typeof entry.timestamp === "string" ? entry.timestamp : undefined,
+        }))
+        .filter((entry) => entry.message)
+    : null;
+
+  const combinedFeedback = analysisFromDb ?? analysisFromWebhook;
+  const combinedTranscript = transcriptFromDb ?? transcriptFromWebhook;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -132,19 +219,15 @@ export default async function SessionDetailPage({
         )}
 
         {/* Feedback Section */}
-        {feedback && (
+        {combinedFeedback && (
           <SessionFeedback
-            feedback={{
-              scoreOverall: feedback.score_overall,
-              scoreBreakdown: feedback.score_breakdown,
-              rawFeedback: feedback.raw_feedback,
-            }}
+            feedback={combinedFeedback}
           />
         )}
 
         {/* Transcript Section */}
-        {transcript && (
-          <SessionTranscript transcript={transcript.transcript} />
+        {combinedTranscript && combinedTranscript.length > 0 && (
+          <SessionTranscript transcript={combinedTranscript} />
         )}
 
         {/* Notes Section */}
