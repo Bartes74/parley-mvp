@@ -59,8 +59,9 @@ export default async function AdminSettingsPage() {
     sender_name: "Parley",
   };
 
-  const elevenLabsSettings = (settingsObject.elevenlabs as { secret?: string } | undefined) || {
-    secret: "",
+  const elevenLabsRaw = settingsObject.elevenlabs as { secret?: string } | undefined;
+  const elevenLabsSettings = {
+    secret: elevenLabsRaw?.secret ?? "",
   };
 
   return (
